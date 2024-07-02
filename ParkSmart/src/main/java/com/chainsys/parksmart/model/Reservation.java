@@ -21,6 +21,9 @@ public class Reservation {
 		this.isActive = isActive;
 	}
 
+	public Reservation() {
+	}
+
 	@Override
 	public String toString() {
 		return "Reservation [userId=" + userId + ", reservationId=" + reservationId + ", numberPlate=" + numberPlate
@@ -28,7 +31,7 @@ public class Reservation {
 				+ reservationStatus + ", isActive=" + isActive + ", getUserId()=" + getUserId()
 				+ ", getReservationId()=" + getReservationId() + ", getNumberPlate()=" + getNumberPlate()
 				+ ", getStartDateTime()=" + getStartDateTime() + ", getEndDateTime()=" + getEndDateTime()
-				+ ", getReservationStatus()=" + getReservationStatus() + ", isActive()=" + isActive() + "]";
+				+ ", getReservationStatus()=" + getReservationStatus() + ", isActive()=" + getIsActive() + "]";
 	}
 
 	public int getUserId() {
@@ -79,7 +82,7 @@ public class Reservation {
 		this.reservationStatus = reservationStatus;
 	}
 
-	public boolean isActive() {
+	public boolean getIsActive() {
 		return isActive;
 	}
 

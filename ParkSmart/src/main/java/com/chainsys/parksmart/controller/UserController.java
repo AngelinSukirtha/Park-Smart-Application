@@ -1,7 +1,5 @@
 package com.chainsys.parksmart.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +51,9 @@ public class UserController {
 
 		boolean loginSuccessful = userDAO.userLogin(user);
 		if (loginSuccessful) {
-			User id = userDAO.getUserById(user);
-			id.setEmail(email);
-			session.setAttribute("id", id);
+			User userId = userDAO.getUserById(user);
+//			id.setEmail(email);
+			session.setAttribute("userId", userId);
 			return "location.jsp";
 		} else {
 			return "userRegister.jsp";

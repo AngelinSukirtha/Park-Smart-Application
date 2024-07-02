@@ -39,8 +39,8 @@ public class UserImpl implements UserDAO {
 
 	public User getUserById(User user) {
 		String query = "SELECT user_id, user_name, user_password, phone_number FROM user WHERE email=?";
-		Object[]details= {user.getEmail()};
-		User existingUsers = jdbcTemplate.queryForObject(query, details, new UserMapper());
+		Object[] details = { user.getEmail() };
+		User existingUsers = jdbcTemplate.queryForObject(query, new UserMapper(), details);
 		return existingUsers;
 	}
 

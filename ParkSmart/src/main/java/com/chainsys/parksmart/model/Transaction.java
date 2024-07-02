@@ -27,6 +27,9 @@ public class Transaction {
 		this.paymentStatus = paymentStatus;
 	}
 
+	public Transaction() {
+	}
+
 	@Override
 	public String toString() {
 		return "Transaction [userId=" + userId + ", transactionId=" + transactionId + ", reservationId=" + reservationId

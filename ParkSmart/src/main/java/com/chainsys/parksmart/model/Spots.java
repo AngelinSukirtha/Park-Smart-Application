@@ -32,7 +32,7 @@ public class Spots {
 				+ countSpotNumber + ", spotStatus=" + spotStatus + ", getUserId()=" + getUserId() + ", getSpotId()="
 				+ getSpotId() + ", getLocationName()=" + getLocationName() + ", getAddress()=" + getAddress()
 				+ ", getVehicleType()=" + getVehicleType() + ", getSpotNumber()=" + getSpotNumber()
-				+ ", getCountSpotNumber()=" + getCountSpotNumber() + ", isSpotStatus()=" + isSpotStatus() + "]";
+				+ ", getCountSpotNumber()=" + getCountSpotNumber() + ", isSpotStatus()=" + getSpotStatus() + "]";
 	}
 
 	public int getUserId() {
@@ -91,7 +91,7 @@ public class Spots {
 		this.countSpotNumber = countSpotNumber;
 	}
 
-	public boolean isSpotStatus() {
+	public boolean getSpotStatus() {
 		return spotStatus;
 	}
 

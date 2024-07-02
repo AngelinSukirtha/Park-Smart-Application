@@ -203,7 +203,7 @@ footer {
 			<p>Rs.60 per hour</p>
 		</button>
 	</div>
-	<form id="parkingForm" action="ParkingSpotsServlet" method="post">
+	<form id="parkingForm" action="/spots" method="get">
 		<input type="hidden" name="vehicleType" id="vehicleTypeInput">
 		<div class="container">
 			<%
@@ -328,7 +328,7 @@ footer {
 	<footer
 		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
 		<div style="text-align: center; margin-top: 20px;">
-			<p>&copy; 2024 Parking Spot. All Rights Reserved.</p>
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
 		</div>
 	</footer>
 </body>
