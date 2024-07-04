@@ -137,7 +137,7 @@ footer {
 			href="aboutUs.jsp" target="blank">AboutUs</a>
 	</nav>
 	<h2>Transactions</h2>
-	<form action="TransactionServlet" method="post">
+	<form action="/transaction" method="get">
 		<table>
 			<tr>
 				<th>Price</th>
@@ -146,7 +146,8 @@ footer {
 				<th>Payment Checkout</th>
 			</tr>
 			<%
-			User user = (User) session.getAttribute("userId");
+			int id = (int) session.getAttribute("userId");
+			int reservationId = (int) session.getAttribute("reservationId");
 			Transaction transaction = new Transaction();
 			%>
 			<tr>

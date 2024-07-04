@@ -51,9 +51,9 @@ public class UserController {
 
 		boolean loginSuccessful = userDAO.userLogin(user);
 		if (loginSuccessful) {
-			User userId = userDAO.getUserById(user);
-//			id.setEmail(email);
+			int userId = userDAO.getUserById(user);
 			session.setAttribute("userId", userId);
+			System.out.println(userId);
 			return "location.jsp";
 		} else {
 			return "userRegister.jsp";

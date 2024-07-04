@@ -1,12 +1,20 @@
 package com.chainsys.parksmart.dao;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.chainsys.parksmart.mapper.*;
-
+import com.chainsys.parksmart.model.Reservation;
+import com.chainsys.parksmart.model.Spots;
+import com.chainsys.parksmart.model.Transaction;
 import com.chainsys.parksmart.model.User;
 
 @Repository
@@ -37,11 +45,157 @@ public class UserImpl implements UserDAO {
 		return count == 1;
 	}
 
-	public User getUserById(User user) {
-		String query = "SELECT user_id, user_name, user_password, phone_number FROM user WHERE email=?";
+	public Integer getUserById(User user) {
+		String query = "SELECT user_id FROM user WHERE email=?";
 		Object[] details = { user.getEmail() };
-		User existingUsers = jdbcTemplate.queryForObject(query, new UserMapper(), details);
+		int existingUsers = jdbcTemplate.queryForObject(query, Integer.class, details);
 		return existingUsers;
+	}
+
+	public void insertSpots(Spots spots, int id, String locationName, String address, String vehicleType,
+			String spotNumber) {
+		String query = "INSERT INTO spots (user_id, location_name, address, vehicle_type, spot_number, spot_status) VALUES (?, ?, ?, ?, ?, ?)";
+		Object[] params = { id, locationName, address, vehicleType, spotNumber, spots.getSpotStatus() };
+		jdbcTemplate.update(query, params);
+	}
+
+	public List<String> readSpotNumbers(String locationName) {
+		List<String> spotList = new ArrayList<>();
+		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
+		spotList = jdbcTemplate.queryForList(query, String.class, locationName);
+		return spotList;
+	}
+
+	public void updateSpotStatus(Spots spots) {
+		String update = "UPDATE spots SET spot_status=? WHERE spot_id = ?";
+		Object[] params = { spots.getSpotId(), spots.getSpotStatus() };
+		jdbcTemplate.update(update, params);
+	}
+
+	public int countSpotNumber(Spots spots, int id) {
+		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? and spot_status=1";
+		Integer spotCount = jdbcTemplate.queryForObject(query, Integer.class, id);
+		return spotCount;
+	}
+
+	public List<Spots> readSpots() {
+		String read = "SELECT user_id, spot_id, location_name, address, vehicle_type, spot_number, count_spot_number, spot_status FROM spots";
+		List<Spots> spots = jdbcTemplate.query(read, new SpotsMapper());
+		return spots;
+	}
+
+	public int getReservationByReservationId(int id) {
+		String query = "SELECT reservation_id FROM reservation WHERE user_id = ? and reservation_status='pending'";
+		Object[] details = { id };
+		System.out.println(id);
+		int existingUsers = jdbcTemplate.queryForObject(query, Integer.class, details);
+		return existingUsers;
+	}
+
+	public void insertReservation(Reservation reservation, int id) {
+		String query = "INSERT INTO reservation (user_id, reservation_id, number_plate, start_date_time, end_date_time, is_active) VALUES (?, ?, ?, ?, ?, ?)";
+		Object[] params = { id, reservation.getReservationId(), reservation.getNumberPlate(),
+				reservation.getStartDateTime(), reservation.getEndDateTime(), reservation.getIsActive() };
+		jdbcTemplate.update(query, params);
+	}
+
+	public List<Reservation> readReservation() {
+		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active FROM reservation";
+		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
+		return reservation;
+	}
+
+	public void updateReservationStatus(Reservation reservation) {
+		String update = "UPDATE reservation SET reservation_status=? WHERE reservation_id = ?";
+		Object[] params = { reservation.getReservationStatus(), reservation.getReservationId() };
+		jdbcTemplate.update(update, params);
+	}
+
+	public void updateIsActive(Reservation reservation) {
+		String update = "UPDATE Reservations SET is_active=? WHERE reservation_id = ?";
+		Object[] params = { reservation.getIsActive(), reservation.getReservationId() };
+		jdbcTemplate.update(update, params);
+	}
+
+	public List<Reservation> readReservation(Reservation reservation) {
+		String read = "SELECT reservation_id FROM reservation WHERE user_id=? and is_active=true";
+		Object[] params = { reservation.getUserId() };
+		List<Reservation> reservations = jdbcTemplate.query(read, new ReservationMapper(), params);
+		return reservations;
+	}
+
+	public void insertTransaction(Reservation reservation, Transaction transaction, String vehicleType,
+			int reservationId, int id) {
+		System.out.println("insertTransaction");
+		String query = "INSERT INTO transaction (user_id, reservation_id, price, payment_method, transaction_time) VALUES (?, ?, ?, '', ?)";
+
+		LocalDateTime start = parseDateTime(reservation.getStartDateTime());
+		LocalDateTime end = parseDateTime(reservation.getEndDateTime());
+		int price = 0;
+
+		if (start != null && end != null) {
+			price = calculatePrice(vehicleType, start, end);
+			System.out.println(price);
+		}
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String transactionTimeFormatted = LocalDateTime.now().format(formatter);
+
+		Object[] params = { id, reservationId, transaction.getPrice(), transactionTimeFormatted };
+		jdbcTemplate.update(query, params);
+	}
+
+	public LocalDateTime parseDateTime(String dateTimeString) {
+		if (dateTimeString != null) {
+			return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		} else {
+			return null;
+		}
+	}
+
+	public int calculatePrice(String vehicleType, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+		Duration duration = Duration.between(startDateTime, endDateTime);
+		long hours = duration.toHours();
+		int hourlyRate;
+		switch (vehicleType) {
+		case "Car":
+			hourlyRate = 50;
+			break;
+		case "Bike":
+			hourlyRate = 15;
+			break;
+		case "Truck":
+			hourlyRate = 100;
+			break;
+		default:
+			hourlyRate = 50;
+			break;
+		}
+		return (int) (hours * hourlyRate);
+	}
+
+//	public List<Reservation> readReservation() {
+//		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active FROM reservation";
+//		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
+//		return reservation;
+//	}
+
+	public void addPaymentMethod(Transaction transaction, int id, String paymentMethod) {
+		String update = "UPDATE transaction SET payment_method = ?, payment_status='paid' WHERE user_id = ? and transaction_id=?";
+		Object[] params = { paymentMethod, id, transaction.getTransactionId() };
+		jdbcTemplate.update(update, params);
+	}
+
+	public List<Transaction> readTransaction() {
+		String read = "SELECT user_id, reservation_id, transaction_id, price, payment_method, transaction_time, card_number, expiry_date, cvv FROM transaction";
+		List<Transaction> transaction = jdbcTemplate.query(read, new TransactionMapper());
+		return transaction;
+	}
+
+	public Transaction readTransactions(Transaction transaction) {
+		String read = "SELECT price, transaction_time FROM transaction WHERE user_id=?";
+		jdbcTemplate.query(read, new TransactionMapper());
+		return transaction;
 	}
 
 }

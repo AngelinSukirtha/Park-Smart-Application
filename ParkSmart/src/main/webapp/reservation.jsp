@@ -147,15 +147,11 @@ footer {
 	<div class="container">
 		<h2>Reservation</h2>
 		<%
-		User user = (User) session.getAttribute("userId");
-		if (user != null) {
-			Integer id = user.getUserId();
-			SpotsDAO spotsDAO = new SpotsDAO();
-			Spots spots = new Spots();
-			spotsDAO.countSpotNumber(spots, id);
-			int countSpotNumber = spots.getCountSpotNumber();
-			out.println("Vehicle Count:" + countSpotNumber);
-		}
+		int id = (int) session.getAttribute("userId");
+		UserImpl userImpl = new UserImpl();
+		Spots spots = new Spots();
+		Integer countSpotNumber = (Integer) session.getAttribute("countSpotNumber");
+		out.println("Vehicle Count:" + countSpotNumber);
 		%>
 		<form action="/reservation" method="get">
 			<label for="numberPlate">Number Plate:</label> <input type="text"
