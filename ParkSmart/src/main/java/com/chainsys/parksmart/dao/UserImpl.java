@@ -3,8 +3,6 @@ package com.chainsys.parksmart.dao;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +57,8 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<String> readSpotNumbers(String locationName) {
-		List<String> spotList = new ArrayList<>();
 		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
-		spotList = jdbcTemplate.queryForList(query, String.class, locationName);
+		List<String> spotList = jdbcTemplate.queryForList(query, String.class, locationName);
 		return spotList;
 	}
 
@@ -76,12 +73,6 @@ public class UserImpl implements UserDAO {
 		Integer spotCount = jdbcTemplate.queryForObject(query, Integer.class, id);
 		return spotCount;
 	}
-
-//	public List<Spots> readSpots() {
-//		String read = "SELECT user_id, spot_id, location_name, address, vehicle_type, spot_number, count_spot_number, spot_status FROM spots";
-//		List<Spots> spots = jdbcTemplate.query(read, new SpotsMapper());
-//		return spots;
-//	}
 
 	public int getReservationByReservationId(int id) {
 		String query = "SELECT reservation_id FROM reservation WHERE user_id = ? and reservation_status='pending'";
@@ -110,7 +101,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public void updateIsActive(Reservation reservation) {
-		String update = "UPDATE Reservations SET is_active=? WHERE reservation_id = ?";
+		String update = "UPDATE reservation SET is_active=? WHERE reservation_id = ?";
 		Object[] params = { reservation.getIsActive(), reservation.getReservationId() };
 		jdbcTemplate.update(update, params);
 	}
@@ -150,10 +141,8 @@ public class UserImpl implements UserDAO {
 
 	public void updateTransaction(Transaction transaction, int reservationId) {
 		String update = "UPDATE transaction SET card_number=?, expiry_date=?, cvv=? WHERE reservation_id = ?";
-
 		Object[] params = { transaction.getCardNumber(), transaction.getExpiryDate(), transaction.getCvv(),
 				reservationId };
-
 		jdbcTemplate.update(update, params);
 	}
 
@@ -199,7 +188,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Transaction> readTransaction() {
-		String read = "SELECT user_id, reservation_id, transaction_id, price, payment_method, transaction_time, card_number, expiry_date, cvv FROM transaction";
+		String read = "SELECT user_id, reservation_id, transaction_id, price, payment_method, transaction_time, card_number, expiry_date, cvv, payment_status FROM transaction";
 		List<Transaction> transaction = jdbcTemplate.query(read, new TransactionMapper());
 		return transaction;
 	}
@@ -243,10 +232,43 @@ public class UserImpl implements UserDAO {
 		String search = "SELECT user_id, spot_id, location_name, address, vehicle_type, spot_number, spot_status "
 				+ "FROM spots "
 				+ "WHERE user_id = ? OR spot_id=? OR location_name LIKE ? OR address LIKE ? OR vehicle_type LIKE ? OR spot_number LIKE ? OR spot_status LIKE ?";
-		Object[] params = { "%" + searchText + "%", "%" + searchText + "%", "%" + searchText + "%",
-				"%" + searchText + "%", "%" + searchText + "%", "%" + searchText + "%", "%" + searchText + "%" };
+		Object[] params = { searchText, searchText, "%" + searchText + "%", "%" + searchText + "%",
+				"%" + searchText + "%", "%" + searchText + "%", "%" + searchText + "%" };
 		List<Spots> spotsList = jdbcTemplate.query(search, new SpotsMapper(), params);
 		return spotsList;
+	}
+
+	public List<Reservation> searchReservation(String searchText) {
+		String search = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active "
+				+ "FROM reservation "
+				+ "WHERE user_id = ? OR reservation_id = ? OR number_plate LIKE ? OR start_date_time = ? OR end_date_time = ? OR reservation_status = ? OR is_active = ?";
+		Object[] params = { searchText, searchText, "%" + searchText + "%", searchText, searchText, searchText,
+				searchText };
+		List<Reservation> reservations = jdbcTemplate.query(search, new ReservationMapper(), params);
+		return reservations;
+	}
+
+	public List<Transaction> searchTransaction(String searchText) {
+		String search = "SELECT user_id, transaction_id, reservation_id, price, payment_method, transaction_time, card_number, expiry_date, cvv, payment_status "
+				+ "FROM transaction "
+				+ "WHERE user_id = ? OR transaction_id = ? OR reservation_id = ? OR price = ? OR payment_method LIKE ? OR transaction_time = ? OR card_number = ? OR expiry_date = ? OR cvv = ? OR payment_status = ?";
+		Object[] params = { searchText, searchText, searchText, searchText, "%" + searchText + "%", searchText,
+				searchText, searchText, searchText, searchText };
+		List<Transaction> transaction = jdbcTemplate.query(search, new TransactionMapper(), params);
+		return transaction;
+	}
+
+	public List<String> readSpotNumber(int id) {
+		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
+		List<String> spotList = jdbcTemplate.queryForList(query, String.class, id);
+		return spotList;
+	}
+
+	public User readUsers(User user, int id) {
+		String read = "SELECT user_name, phone_number, email FROM user where user_id=? and status=1";
+		Object[] params = { user.getUserName(), user.getPhoneNumber(), user.getEmail(), id };
+		jdbcTemplate.query(read, new UserMapper(), params);
+		return user;
 	}
 
 }

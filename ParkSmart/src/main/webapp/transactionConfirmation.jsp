@@ -125,7 +125,7 @@ footer {
 			href="aboutUs.jsp" target="blank">AboutUs</a>
 	</nav>
 	<div class="container">
-		<form action="TransactionServlet" method="post">
+		<form action="/transactionConfirmation" method="get">
 			<h2>Thank You for Your Reservation!</h2>
 			<div class="confirmation">
 				<p>Your transaction for a parking spot has been confirmed.</p>
@@ -155,7 +155,7 @@ footer {
 				</p>
 			</div>
 			<div class="confirmation">
-				<a href="index.html" class="btn">Back to Home</a>
+				<a href="index.jsp" class="btn">Back to Home</a>
 			</div>
 		</form>
 		<div class="confirmation">

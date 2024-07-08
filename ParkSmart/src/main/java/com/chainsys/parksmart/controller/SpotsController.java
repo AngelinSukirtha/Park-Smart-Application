@@ -1,5 +1,6 @@
 package com.chainsys.parksmart.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 
 import com.chainsys.parksmart.dao.UserDAO;
 import com.chainsys.parksmart.model.Spots;
+import com.chainsys.parksmart.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,8 +23,16 @@ public class SpotsController {
 
 	@GetMapping("/locationName")
 	public String locationName(@RequestParam("locationName") String locationName, HttpSession session) {
+
+		Validation validation = new Validation();
+
 		Spots spots = new Spots();
 		spots.setLocationName(locationName);
+
+		if (!validation.validateLocationName(locationName)) {
+			return "location.jsp";
+		}
+
 		session.setAttribute("locationName", locationName);
 		switch (locationName) {
 		case "Chennai":
@@ -38,8 +48,16 @@ public class SpotsController {
 
 	@GetMapping("/address")
 	public String address(@RequestParam("address") String address, Model model, HttpSession session) {
+
+		Validation validation = new Validation();
+
 		Spots spots = new Spots();
 		spots.setAddress(address);
+
+		if (!validation.validateAddress(address)) {
+			return "location.jsp";
+		}
+
 		session.setAttribute("address", address);
 
 		if (address.equals("Mylapore") || address.equals("Velachery") || address.equals("Perungudi")
@@ -55,22 +73,41 @@ public class SpotsController {
 	}
 
 	@GetMapping("/spots")
-	public String selectedSpots(HttpSession session, String[] selectedSpots,
-			@RequestParam("vehicleType") String vehicleType) {
+	public String selectedSpots(HttpSession session, String[] selectedSpots) {
+
+		Validation validation = new Validation();
 		Spots spots = new Spots();
-		spots.setVehicleType(vehicleType);
-		session.setAttribute("vehicleType", vehicleType);
 
 		int id = (int) session.getAttribute("userId");
 		String locationName = (String) session.getAttribute("locationName");
 		String address = (String) session.getAttribute("address");
 
 		for (String spotNumber : selectedSpots) {
-			String cleanSpotNumber = spotNumber.substring(2, spotNumber.length() - 2);
+			String cleanSpotNumber = spotNumber.substring(1, spotNumber.length() - 1);
 			String[] spotNumbers = cleanSpotNumber.split("\",\"");
 			for (String spot : spotNumbers) {
 				String trimmedSpot = spot.trim().replace("\"", "");
+
+				String vehicleType;
+				if (trimmedSpot.startsWith("C")) {
+					vehicleType = "Car";
+				} else if (trimmedSpot.startsWith("B")) {
+					vehicleType = "Bike";
+				} else if (trimmedSpot.startsWith("T")) {
+					vehicleType = "Truck";
+				} else {
+					return "location.jsp";
+				}
+
+				if (!validation.validateVehicleType(vehicleType)) {
+					return "location.jsp";
+				}
+
+				spots.setVehicleType(vehicleType);
+				session.setAttribute("vehicleType", vehicleType);
+
 				userDAO.insertSpots(spots, id, locationName, address, vehicleType, trimmedSpot);
+
 				int countSpotNumber = userDAO.countSpotNumber(spots, id);
 				spots.setCountSpotNumber(countSpotNumber);
 				session.setAttribute("countSpotNumber", countSpotNumber);

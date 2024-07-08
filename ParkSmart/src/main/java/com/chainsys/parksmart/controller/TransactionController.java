@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.parksmart.dao.UserDAO;
+import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
+import com.chainsys.parksmart.model.User;
+import com.chainsys.parksmart.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,6 +23,8 @@ public class TransactionController {
 	@GetMapping("/transaction")
 	public String handleTransaction(HttpSession session, Model model) {
 
+		Validation validation = new Validation();
+
 		Transaction transaction = new Transaction();
 
 		int id = (int) session.getAttribute("userId");
@@ -30,6 +35,10 @@ public class TransactionController {
 
 		String startDateTime = (String) session.getAttribute("startDateTime");
 		String endDateTime = (String) session.getAttribute("endDateTime");
+
+		if (!validation.validateVehicleType(vehicleType)) {
+			return "transaction.jsp";
+		}
 
 		userDAO.getPrice(transaction, vehicleType, startDateTime, endDateTime);
 		int price = transaction.getPrice();
@@ -47,8 +56,15 @@ public class TransactionController {
 
 	@GetMapping("/pay")
 	public String handlePay(HttpSession session, @RequestParam("paymentMethod") String paymentMethod) {
+
+		Validation validation = new Validation();
+
 		Transaction transaction = new Transaction();
 		transaction.setPaymentMethod(paymentMethod);
+
+		if (!validation.validatePaymentMethod(paymentMethod)) {
+			return "transaction.jsp";
+		}
 
 		int id = (int) session.getAttribute("userId");
 		userDAO.addPaymentMethod(transaction, id, paymentMethod);
@@ -59,6 +75,8 @@ public class TransactionController {
 	public String handlePayment(HttpSession session, Model model, @RequestParam("cardNumber") String cardNumber,
 			@RequestParam("expiryDate") String expiryDate, @RequestParam("cvv") String cvv) {
 
+		Validation validation = new Validation();
+
 		Transaction transaction = new Transaction();
 
 		transaction.setCardNumber(cardNumber);
@@ -67,10 +85,50 @@ public class TransactionController {
 
 		int reservationId = (int) session.getAttribute("reservationId");
 
+		if (!validation.validateCardNumber(cardNumber) || !validation.validateExpiryDate(expiryDate)
+				|| !validation.validateCvv(cvv)) {
+			return "payment.jsp";
+		}
+
 		userDAO.updateTransaction(transaction, reservationId);
 		userDAO.readTransactions(transaction);
 
+		return "/transactionConfirmation";
+	}
+
+	@GetMapping("/transactionConfirmation")
+	public String handleTransactionConfirmation(HttpSession session, Model model) {
+//		Transaction transaction = new Transaction();
+//		Spots spots = new Spots();
+//		User user = new User();
+//		int id = (int) session.getAttribute("userId");
+//		System.out.println(id);
+//
+//		userDAO.readTransactions(transaction);
+//		int price = transaction.getPrice();
+//		System.out.println(price);
+//		String transactionTime = transaction.getTransactionTime();
+//		System.out.println(transactionTime);
+//		userDAO.readSpotNumber(id);
+//		String spotNumber = spots.getSpotNumber();
+//		System.out.println(spotNumber);
+//		userDAO.readUsers(user, id);
+//		String userName = user.getUserName();
+//		String phoneNumber = user.getPhoneNumber();
+//		String email = user.getEmail();
+//		System.out.println(userName);
+//		System.out.println(phoneNumber);
+//		System.out.println(email);
+//
+//		model.addAttribute("userName", userName);
+//		model.addAttribute("phoneNumber", phoneNumber);
+//		model.addAttribute("email", email);
+//		model.addAttribute("price", price);
+//		model.addAttribute("transactionTime", transactionTime);
+//		model.addAttribute("spotNumber", spotNumber);
+
 		return "transactionConfirmation.jsp";
+
 	}
 
 }

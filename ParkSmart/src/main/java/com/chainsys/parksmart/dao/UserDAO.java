@@ -24,8 +24,6 @@ public interface UserDAO {
 
 	public int countSpotNumber(Spots spots, int id);
 
-//	public List<Spots> readSpots();
-
 	public void insertReservation(Reservation reservation, int id);
 
 	public List<Reservation> readReservation();
@@ -65,4 +63,12 @@ public interface UserDAO {
 	public List<Spots> searchSpots(String searchText);
 
 	public List<Reservation> readReservations();
+
+	public List<Reservation> searchReservation(String searchText);
+
+	public List<Transaction> searchTransaction(String searchText);
+
+	public List<String> readSpotNumber(int id);
+
+	public User readUsers(User user, int id);
 }

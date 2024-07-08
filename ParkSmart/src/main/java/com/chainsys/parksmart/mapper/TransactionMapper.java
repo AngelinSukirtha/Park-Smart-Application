@@ -22,6 +22,7 @@ public class TransactionMapper implements RowMapper<Transaction> {
 		transaction.setCardNumber(rs.getString("card_number"));
 		transaction.setExpiryDate(rs.getString("expiry_date"));
 		transaction.setCvv(rs.getString("cvv"));
+		transaction.setPaymentStatus(rs.getString("payment_status"));
 		return transaction;
 	}
 

@@ -10,6 +10,7 @@ import com.chainsys.parksmart.dao.UserDAO;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
+import com.chainsys.parksmart.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,6 +24,13 @@ public class ReservationController {
 	public String handleReservation(HttpSession session, @RequestParam("numberPlate") String numberPlate,
 			@RequestParam("startDateTime") String startDateTime, @RequestParam("endDateTime") String endDateTime,
 			Spots spots, Model model) {
+
+		Validation validation = new Validation();
+
+		if (!validation.validateNumberPlate(numberPlate)) {
+			return "reservation.jsp";
+		}
+
 		int id = (int) session.getAttribute("userId");
 		spots.getCountSpotNumber();
 		Reservation reservation = new Reservation();

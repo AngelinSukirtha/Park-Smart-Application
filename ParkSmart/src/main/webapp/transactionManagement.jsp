@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="ISO-8859-1">
-<title>Reservation Management</title>
+<title>Transaction Details</title>
 <style>
 body {
 	background-color: rgb(230, 230, 230);
@@ -120,12 +120,12 @@ footer {
 			href="aboutUs.jsp" target="blank">AboutUs</a>
 	</nav>
 	<div class="center">
-		<h1 style="color: black;">RESERVATION DETAILS</h1>
+		<h1 style="color: black;">TRANSACTION DETAILS</h1>
 	</div>
 	<%
-	List<Reservation> list = (ArrayList<Reservation>) request.getAttribute("list");
+	List<Transaction> list = (ArrayList<Transaction>) request.getAttribute("list");
 	%>
-	<form action="/searchReservation" method="get">
+	<form action="/searchTransaction" method="get">
 		<div class="search">
 			<input type="text" name="searchText" id="searchText" required>
 			<input type="submit" value="Search" class="btn-search">
@@ -134,48 +134,31 @@ footer {
 	<table border="1" style="margin-top: 20px">
 		<tr style="background-color: rgb(253, 220, 54); height: 40px;">
 			<th style="color: black;">User Id</th>
+			<th style="color: black;">Transaction Id</th>
 			<th style="color: black;">Reservation Id</th>
-			<th style="color: black;">Number Plate</th>
-			<th style="color: black;">Start Date And Time</th>
-			<th style="color: black;">End Date And Time</th>
-			<th style="color: black;">Reservation Status</th>
-			<th style="color: black;">Active</th>
-			<th style="color: black;" colspan="2">Approval</th>
+			<th style="color: black;">Price</th>
+			<th style="color: black;">Payment Method</th>
+			<th style="color: black;">Transaction Time</th>
+			<th style="color: black;">Card Number</th>
+			<th style="color: black;">Expiry Date</th>
+			<th style="color: black;">CVV</th>
+			<th style="color: black;">Payment Status</th>
 		</tr>
 		<%
 		if (list != null) {
-			for (Reservation reservation : list) {
+			for (Transaction transaction : list) {
 		%>
 		<tr style="color: black; background-color: white; text-align: center;">
-			<td><%=reservation.getUserId()%></td>
-			<td><%=reservation.getReservationId()%></td>
-			<td><%=reservation.getNumberPlate()%></td>
-			<td><%=reservation.getStartDateTime()%></td>
-			<td><%=reservation.getEndDateTime()%></td>
-			<td><%=reservation.getReservationStatus()%></td>
-			<td><%=reservation.getIsActive()%></td>
-			<td>
-				<form action="/updateReservationStatus" method="get">
-					<input type="hidden" name="reservationId"
-						value="<%=reservation.getReservationId()%>"> <select
-						name="reservationStatus">
-						<option>Select</option>
-						<option value="Approved">Approved</option>
-						<option value="Rejected">Rejected</option>
-					</select> <input type="submit" value="Update"
-						style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
-				</form>
-			</td>
-			<td><form action="/updateReservationActive" method="get">
-					<input type="hidden" name="reservationId"
-						value="<%=reservation.getReservationId()%>"> <select
-						name="isActive">
-						<option>Select</option>
-						<option>true</option>
-						<option>false</option>
-					</select><input type="submit" name="isActive" value="update"
-						style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
-				</form></td>
+			<td><%=transaction.getUserId()%></td>
+			<td><%=transaction.getTransactionId()%></td>
+			<td><%=transaction.getReservationId()%></td>
+			<td><%=transaction.getPrice()%></td>
+			<td><%=transaction.getPaymentMethod()%></td>
+			<td><%=transaction.getTransactionTime()%></td>
+			<td><%=transaction.getCardNumber()%></td>
+			<td><%=transaction.getExpiryDate()%></td>
+			<td><%=transaction.getCvv()%></td>
+			<td><%=transaction.getPaymentStatus()%></td>
 		</tr>
 		<%
 		}
@@ -183,7 +166,7 @@ footer {
 		%>
 	</table>
 	<br>
-	<div style="text-align: center">
+	<div style="text-align: center;">
 		<form action="admin.jsp">
 			<button type="submit"
 				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
@@ -193,7 +176,7 @@ footer {
 	<footer
 		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
 		<div style="text-align: center; margin-top: 20px;">
-			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+			<p>&copy; 2024 Parking Spot. All Rights Reserved.</p>
 		</div>
 	</footer>
 </body>

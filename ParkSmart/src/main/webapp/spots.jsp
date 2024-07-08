@@ -216,6 +216,7 @@ footer {
 					String spotId = "C" + i;
 					boolean isOccupied = false;
 					for (String spot : spotList) {
+						System.out.println("spot" + spot);
 						if (spot.equals(spotId)) {
 					isOccupied = true;
 					break;
@@ -290,19 +291,11 @@ footer {
 				event.preventDefault();
 
 				let selectedCells = [];
-				let vehicleType = '';
 
 				checkboxes.each(function() {
 					if ($(this).prop('checked')) {
-						selectedCells.push($(this).attr('id'));
-
-						if ($(this).attr('id').startsWith('C')) {
-							vehicleType = 'Car';
-						} else if ($(this).attr('id').startsWith('B')) {
-							vehicleType = 'Bike';
-						} else if ($(this).attr('id').startsWith('T')) {
-							vehicleType = 'Truck';
-						}
+						let spotId = $(this).attr('id');
+						selectedCells.push(spotId);
 					}
 				});
 
@@ -311,15 +304,11 @@ footer {
 					return;
 				}
 
-				$('#vehicleTypeInput').val(vehicleType);
-
 				$('<input>').attr({
 					type : 'hidden',
 					name : 'selectedSpots',
 					value : JSON.stringify(selectedCells)
 				}).appendTo(parkingForm);
-
-				console.log(vehicleType);
 
 				parkingForm.get(0).submit();
 			});

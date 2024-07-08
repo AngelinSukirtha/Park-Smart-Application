@@ -209,14 +209,14 @@ nav h1 {
 			<div class="card">
 				<form action="/manageReservations" method="get">
 					<div class="card-header">Reservations</div>
-					<a href="ReservationApproval.jsp"><button class="button">Manage</button></a>
+					<a href="reservationManagement.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 
 			<div class="card">
-				<form action="/transactions" method="post">
+				<form action="/manageTransactions" method="get">
 					<div class="card-header">Transactions</div>
-					<a href="TransactionManagement.jsp"><button class="button">Manage</button></a>
+					<a href="transactionManagement.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 		</div>

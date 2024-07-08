@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.parksmart.dao.UserDAO;
 import com.chainsys.parksmart.model.User;
+import com.chainsys.parksmart.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,6 +36,15 @@ public class UserController {
 	@GetMapping("/register")
 	public String saveUser(@RequestParam("userName") String userName, @RequestParam("userPassword") String userPassword,
 			@RequestParam("phoneNumber") String phoneNumber, @RequestParam("email") String email) {
+
+		Validation validation = new Validation();
+
+		if (!validation.validateUserName(userName) || !validation.validateUserPassword(userPassword)
+				|| !validation.validatePhoneNumber(phoneNumber) || !validation.validateEmail(email)) {
+
+			return "userRegister.jsp";
+		}
+
 		User user = new User();
 		user.setUserName(userName);
 		user.setUserPassword(userPassword);
@@ -47,6 +57,13 @@ public class UserController {
 	@GetMapping("/login")
 	public String userLogin(@RequestParam("email") String email, HttpSession session,
 			@RequestParam("userPassword") String userPassword) {
+
+		Validation validation = new Validation();
+
+		if (!validation.validateEmail(email) || !validation.validateUserPassword(userPassword)) {
+			return "userLogin.jsp";
+		}
+
 		User user = new User();
 		user.setEmail(email);
 
@@ -63,4 +80,5 @@ public class UserController {
 			}
 		}
 	}
+
 }
