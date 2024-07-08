@@ -20,12 +20,16 @@ public class ReservationController {
 	@Autowired
 	UserDAO userDAO;
 
+	@Autowired
+	Validation validation;
+
+	@Autowired
+	Transaction transaction;
+
 	@GetMapping("/reservation")
 	public String handleReservation(HttpSession session, @RequestParam("numberPlate") String numberPlate,
 			@RequestParam("startDateTime") String startDateTime, @RequestParam("endDateTime") String endDateTime,
 			Spots spots, Model model) {
-
-		Validation validation = new Validation();
 		if (!validation.validateNumberPlate(numberPlate)) {
 			return "reservation.jsp";
 		}
@@ -40,8 +44,6 @@ public class ReservationController {
 
 		reservation.setEndDateTime(endDateTime);
 		session.setAttribute("endDateTime", endDateTime);
-
-		Transaction transaction = new Transaction();
 
 		userDAO.insertReservation(reservation, id);
 		userDAO.readReservation(reservation);

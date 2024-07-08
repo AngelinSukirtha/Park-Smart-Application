@@ -1,5 +1,8 @@
 package com.chainsys.parksmart.model;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class Spots {
 	int userId;
 	int spotId;

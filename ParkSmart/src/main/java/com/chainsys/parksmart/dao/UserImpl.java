@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.chainsys.parksmart.mapper.*;
@@ -60,7 +61,7 @@ public class UserImpl implements UserDAO {
 		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
 		List<String> spotList = jdbcTemplate.queryForList(query, String.class, locationName);
 		return spotList;
-		
+
 	}
 
 	public void updateSpotStatus(Spots spots) {
@@ -259,17 +260,28 @@ public class UserImpl implements UserDAO {
 		return transaction;
 	}
 
-	public List<String> readSpotNumber(int id) {
+//	public List<String> readSpotNumber(int id) {
+//		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
+//		List<String> spotList = jdbcTemplate.queryForList(query, String.class, id);
+//		return spotList;
+//	}
+
+	public Spots readSpotNumber(Spots spots) {
 		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
-		List<String> spotList = jdbcTemplate.queryForList(query, String.class, id);
-		return spotList;
+		Object[] params = { spots.getUserId() };
+		jdbcTemplate.queryForList(query, String.class, params);
+		return spots;
 	}
 
-	public User readUsers(User user, int id) {
-		String read = "SELECT user_name, phone_number, email FROM user where user_id=? and status=1";
-		Object[] params = { user.getUserName(), user.getPhoneNumber(), user.getEmail(), id };
-		jdbcTemplate.query(read, new UserMapper(), params);
-		return user;
+	public User readUsers(User user) {
+		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ? and status = 1";
+		try {
+			Object[] params = { user.getUserId() };
+			jdbcTemplate.queryForObject(read, new UserMapper(), params);
+			return user;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 }

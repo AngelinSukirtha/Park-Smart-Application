@@ -1,7 +1,10 @@
 package com.chainsys.parksmart.validation;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class Validation {
-	
+
 	public boolean validateUserId(int userId) {
 		return userId > 0;
 	}

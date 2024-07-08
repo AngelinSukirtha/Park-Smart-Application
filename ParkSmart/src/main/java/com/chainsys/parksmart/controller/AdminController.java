@@ -21,6 +21,15 @@ public class AdminController {
 	@Autowired
 	UserDAO userDAO;
 
+	@Autowired
+	User user;
+
+	@Autowired
+	Spots spots;
+
+	@Autowired
+	Reservation reservation;
+
 	@GetMapping("/users")
 	public String handleUsers(HttpSession session, Model model) {
 		List<User> list = userDAO.readUser();
@@ -30,13 +39,12 @@ public class AdminController {
 
 	@GetMapping("/deleteUser")
 	public String deleteUser(@RequestParam("email") String email, Model model) {
-		User user = new User();
 		user.setEmail(email);
 		userDAO.deleteUser(user);
 		List<User> list = userDAO.readUser();
 		model.addAttribute("list", list);
 		return "userManagement.jsp";
-		
+
 	}
 
 	@GetMapping("/searchUser")
@@ -56,7 +64,6 @@ public class AdminController {
 	@GetMapping("/updateSpotStatus")
 	public String updateSpots(Model model, @RequestParam("spotId") int spotId,
 			@RequestParam("spotStatus") boolean spotStatus) {
-		Spots spots = new Spots();
 		spots.setSpotId(spotId);
 		spots.setSpotStatus(spotStatus);
 		userDAO.updateSpotStatus(spots);
@@ -89,7 +96,6 @@ public class AdminController {
 	@GetMapping("/updateReservationStatus")
 	public String updateReservationStatus(Model model, @RequestParam("reservationId") int reservationId,
 			@RequestParam("reservationStatus") String reservationStatus) {
-		Reservation reservation = new Reservation();
 		reservation.setReservationId(reservationId);
 		reservation.setReservationStatus(reservationStatus);
 		userDAO.updateReservationStatus(reservation);
@@ -101,7 +107,6 @@ public class AdminController {
 	@GetMapping("/updateReservationActive")
 	public String updateReservationActive(Model model, @RequestParam("reservationId") int reservationId,
 			@RequestParam("isActive") boolean isActive) {
-		Reservation reservation = new Reservation();
 		reservation.setReservationId(reservationId);
 		reservation.setActive(isActive);
 		userDAO.updateIsActive(reservation);

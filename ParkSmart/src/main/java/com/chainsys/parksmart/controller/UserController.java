@@ -16,7 +16,13 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
 	@Autowired
+	User user;
+
+	@Autowired
 	UserDAO userDAO;
+
+	@Autowired
+	Validation validation;
 
 	@RequestMapping("/")
 	public String home() {
@@ -37,14 +43,12 @@ public class UserController {
 	public String saveUser(@RequestParam("userName") String userName, @RequestParam("userPassword") String userPassword,
 			@RequestParam("phoneNumber") String phoneNumber, @RequestParam("email") String email) {
 
-		Validation validation = new Validation();
 		if (!validation.validateUserName(userName) || !validation.validateUserPassword(userPassword)
 				|| !validation.validatePhoneNumber(phoneNumber) || !validation.validateEmail(email)) {
 
 			return "userRegister.jsp";
 		}
 
-		User user = new User();
 		user.setUserName(userName);
 		user.setUserPassword(userPassword);
 		user.setPhoneNumber(phoneNumber);
@@ -57,13 +61,10 @@ public class UserController {
 	public String userLogin(@RequestParam("email") String email, HttpSession session,
 			@RequestParam("userPassword") String userPassword) {
 
-		Validation validation = new Validation();
-
 		if (!validation.validateEmail(email) || !validation.validateUserPassword(userPassword)) {
 			return "userLogin.jsp";
 		}
 
-		User user = new User();
 		user.setEmail(email);
 
 		if (email.equals("angelin@parkingspot.com") && userPassword.equals("Angelin1")) {

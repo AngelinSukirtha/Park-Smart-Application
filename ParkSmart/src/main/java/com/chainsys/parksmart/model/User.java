@@ -1,5 +1,8 @@
 package com.chainsys.parksmart.model;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class User {
 	int userId;
 	String userName;
@@ -23,8 +26,8 @@ public class User {
 		return "User [userId=" + userId + ", userName=" + userName + ", userPassword=" + userPassword + ", phoneNumber="
 				+ phoneNumber + ", email=" + email + ", status=" + status + ", getUserId()=" + getUserId()
 				+ ", getUserName()=" + getUserName() + ", getUserPassword()=" + getUserPassword()
-				+ ", getPhoneNumber()=" + getPhoneNumber() + ", getEmail()=" + getEmail() + ", getStatus()=" + getStatus()
-				+ "]";
+				+ ", getPhoneNumber()=" + getPhoneNumber() + ", getEmail()=" + getEmail() + ", getStatus()="
+				+ getStatus() + "]";
 	}
 
 	public int getUserId() {
@@ -75,7 +78,6 @@ public class User {
 		this.status = status;
 	}
 
-	
 	public User() {
 	}
 

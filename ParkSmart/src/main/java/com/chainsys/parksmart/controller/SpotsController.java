@@ -1,6 +1,5 @@
 package com.chainsys.parksmart.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,14 @@ public class SpotsController {
 	@Autowired
 	UserDAO userDAO;
 
+	@Autowired
+	Spots spots;
+
+	@Autowired
+	Validation validation;
+
 	@GetMapping("/locationName")
 	public String locationName(@RequestParam("locationName") String locationName, HttpSession session) {
-
-		Validation validation = new Validation();
-
-		Spots spots = new Spots();
 		spots.setLocationName(locationName);
 
 		if (!validation.validateLocationName(locationName)) {
@@ -48,10 +49,6 @@ public class SpotsController {
 
 	@GetMapping("/address")
 	public String address(@RequestParam("address") String address, Model model, HttpSession session) {
-
-		Validation validation = new Validation();
-
-		Spots spots = new Spots();
 		spots.setAddress(address);
 
 		if (!validation.validateAddress(address)) {
@@ -70,15 +67,11 @@ public class SpotsController {
 		} else {
 			return "location.jsp";
 		}
-		
+
 	}
 
 	@GetMapping("/spots")
 	public String selectedSpots(HttpSession session, String[] selectedSpots) {
-
-		Validation validation = new Validation();
-		Spots spots = new Spots();
-
 		int id = (int) session.getAttribute("userId");
 		String locationName = (String) session.getAttribute("locationName");
 		String address = (String) session.getAttribute("address");
