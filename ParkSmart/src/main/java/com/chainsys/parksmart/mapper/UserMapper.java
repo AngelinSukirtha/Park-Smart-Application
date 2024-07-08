@@ -18,6 +18,7 @@ public class UserMapper implements RowMapper<User> {
 		user.setPhoneNumber(rs.getString("phone_number"));
 		user.setEmail(rs.getString("email"));
 		return user;
+		
 	}
 
 }

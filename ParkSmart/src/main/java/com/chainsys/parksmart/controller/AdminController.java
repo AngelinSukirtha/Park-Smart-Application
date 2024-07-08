@@ -36,6 +36,7 @@ public class AdminController {
 		List<User> list = userDAO.readUser();
 		model.addAttribute("list", list);
 		return "userManagement.jsp";
+		
 	}
 
 	@GetMapping("/searchUser")

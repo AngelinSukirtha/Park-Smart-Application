@@ -70,6 +70,7 @@ public class SpotsController {
 		} else {
 			return "location.jsp";
 		}
+		
 	}
 
 	@GetMapping("/spots")

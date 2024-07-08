@@ -22,5 +22,6 @@ public class ReservationMapper implements RowMapper<Reservation> {
 		reservation.setReservationStatus(rs.getString("reservation_status"));
 		reservation.setActive(rs.getBoolean("is_active"));
 		return reservation;
+		
 	}
 }

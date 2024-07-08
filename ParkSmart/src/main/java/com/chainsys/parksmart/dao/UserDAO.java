@@ -71,4 +71,5 @@ public interface UserDAO {
 	public List<String> readSpotNumber(int id);
 
 	public User readUsers(User user, int id);
+	
 }

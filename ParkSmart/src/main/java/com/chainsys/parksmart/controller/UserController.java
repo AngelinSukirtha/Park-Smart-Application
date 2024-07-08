@@ -38,7 +38,6 @@ public class UserController {
 			@RequestParam("phoneNumber") String phoneNumber, @RequestParam("email") String email) {
 
 		Validation validation = new Validation();
-
 		if (!validation.validateUserName(userName) || !validation.validateUserPassword(userPassword)
 				|| !validation.validatePhoneNumber(phoneNumber) || !validation.validateEmail(email)) {
 

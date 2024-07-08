@@ -26,7 +26,6 @@ public class ReservationController {
 			Spots spots, Model model) {
 
 		Validation validation = new Validation();
-
 		if (!validation.validateNumberPlate(numberPlate)) {
 			return "reservation.jsp";
 		}

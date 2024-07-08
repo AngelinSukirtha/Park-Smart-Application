@@ -60,6 +60,7 @@ public class UserImpl implements UserDAO {
 		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
 		List<String> spotList = jdbcTemplate.queryForList(query, String.class, locationName);
 		return spotList;
+		
 	}
 
 	public void updateSpotStatus(Spots spots) {

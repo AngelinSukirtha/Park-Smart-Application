@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.parksmart.dao.UserDAO;
-import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
-import com.chainsys.parksmart.model.User;
 import com.chainsys.parksmart.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;

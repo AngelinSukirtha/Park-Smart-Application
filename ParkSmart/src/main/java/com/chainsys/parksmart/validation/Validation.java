@@ -1,6 +1,7 @@
 package com.chainsys.parksmart.validation;
 
 public class Validation {
+	
 	public boolean validateUserId(int userId) {
 		return userId > 0;
 	}

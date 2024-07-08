@@ -24,6 +24,7 @@ public class TransactionMapper implements RowMapper<Transaction> {
 		transaction.setCvv(rs.getString("cvv"));
 		transaction.setPaymentStatus(rs.getString("payment_status"));
 		return transaction;
+		
 	}
 
 }
