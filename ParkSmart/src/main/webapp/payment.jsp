@@ -139,15 +139,15 @@ footer {
 	</nav>
 	<div class="payment-form-container">
 		<h2>Payment Details</h2>
-		<form action="#" method="POST" class="payment-form">
+		<form action="/payment" method="get" class="payment-form">
 			<div class="form-group">
-				<label for="card-number">Card Number:</label> <input type="text"
-					id="card-number" name="card-number"
+				<label for="cardNumber">Card Number:</label> <input type="text"
+					id="cardNumber" name="cardNumber"
 					placeholder="Enter your card number" required>
 			</div>
 			<div class="form-group">
-				<label for="expiry-date">Expiry Date:</label> <input type="text"
-					id="expiry-date" name="expiry-date" placeholder="MM/YYYY" required>
+				<label for="expiryDate">Expiry Date:</label> <input type="text"
+					id="expiryDate" name="expiryDate" placeholder="MM/YYYY" required>
 			</div>
 			<div class="form-group">
 				<label for="cvv">CVV:</label> <input type="text" id="cvv" name="cvv"

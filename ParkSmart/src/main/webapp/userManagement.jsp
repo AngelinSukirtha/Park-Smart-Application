@@ -10,20 +10,8 @@
 <title>Login Success</title>
 <style>
 body {
+	background-color: rgb(230, 230, 230);
 	margin: 0;
-}
-
-.center {
-	text-align: center;
-	margin: auto;
-	font-size: 15px;
-}
-
-table {
-	margin-top: 20px;
-	margin-left: 100px;
-	border-collapse: collapse;
-	width: 80%;
 }
 
 nav {
@@ -33,7 +21,7 @@ nav {
 }
 
 nav img {
-	width: 80px;
+	width: 26px;
 	height: auto;
 }
 
@@ -76,6 +64,45 @@ nav a {
 	color: black;
 }
 
+.center {
+	text-align: center;
+	margin: auto;
+	font-size: 15px;
+}
+
+table {
+	width: 100%;
+	background-color: white;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th, td {
+	padding: 10px;
+	text-align: center;
+	border: 1px solid #ddd;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+.btn {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.btn-search {
+	background-color: rgb(253, 220, 54);
+	color: black;
+	border: none;
+	height: 20px;
+}
+
+.search {
+	margin-left: 1000px;
+}
+
 footer {
 	margin-top: 400px;
 }
@@ -83,47 +110,59 @@ footer {
 </head>
 <body>
 	<nav>
-		<img src="Photo/logo1.png" alt="Logo" class="topleft">
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
 		<h1 class="topleft"
-			style="color: rgb(253, 220, 54); margin-top: 10px;">Parking</h1>
-		<h1 class="topleft" style="margin-top: 10px;">Spot</h1>
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
 		<a href="index.html" target="blank" class="btn1">Logout</a>
 	</nav>
 	<div class="center">
-		<h1 style="color: black;">REGISTRATION DETAILS</h1>
+		<h1 style="color: black;">USER DETAILS</h1>
 	</div>
-	<table border="1">
-		<tr style="background-color: rgb(253, 220, 54); height: 40px;">
-			<th style="color: black;">User Id</th>
-			<th style="color: black;">Name</th>
-			<th style="color: black;">Password</th>
-			<th style="color: black;">Phone Number</th>
-			<th style="color: black;">Email</th>
-			<th style="color: black;" colspan="1">Actions</th>
-		</tr>
-		<%
-		List<User> list = (ArrayList<User>) request.getAttribute("list");
-		if (list != null) {
-			for (User user : list) {
-		%>
-		<tr style="color: black; background-color: white; text-align: center;">
-			<td><%=user.getUserId()%></td>
-			<td><%=user.getUserName()%></td>
-			<td><%=user.getUserPassword()%></td>
-			<td><%=user.getPhoneNumber()%></td>
-			<td><%=user.getEmail()%></td>
-			<td><form action="UserDetailsServlet" method="get">
-					<input type="hidden" name="delete" value="<%=user.getEmail()%>">
-					<button type="submit"
-						style="border-color: rgb(253, 220, 54); background-color: white"
-						title="delete">Delete</button>
-				</form></td>
-		</tr>
-		<%
-		}
-		}
-		%>
-	</table>
+	<%
+	List<User> list = (ArrayList<User>) request.getAttribute("list");
+	%>
+	<form action="/searchUser" method="get">
+		<div class="search">
+			<input type="text" name="searchText" id="searchText" required>
+			<input type="submit" value="Search" class="btn-search">
+		</div>
+	</form>
+	<div>
+		<table border="1" style="margin-top: 20px">
+			<tr style="background-color: rgb(253, 220, 54); height: 40px;">
+				<th style="color: black;">User Id</th>
+				<th style="color: black;">Name</th>
+				<th style="color: black;">Password</th>
+				<th style="color: black;">Phone Number</th>
+				<th style="color: black;">Email</th>
+				<th style="color: black;" colspan="1">Actions</th>
+			</tr>
+			<%
+			if (list != null) {
+				for (User user : list) {
+			%>
+			<tr
+				style="color: black; background-color: white; text-align: center;">
+				<td><%=user.getUserId()%></td>
+				<td><%=user.getUserName()%></td>
+				<td><%=user.getUserPassword()%></td>
+				<td><%=user.getPhoneNumber()%></td>
+				<td><%=user.getEmail()%></td>
+				<td><form action="/deleteUser" method="get">
+						<input type="hidden" name="email" value="<%=user.getEmail()%>">
+						<button type="submit"
+							style="border-color: rgb(253, 220, 54); background-color: white"
+							title="delete">Delete</button>
+					</form></td>
+			</tr>
+			<%
+			}
+			}
+			%>
+		</table>
+	</div>
 	<br>
 	<div style="text-align: center;">
 		<form action="admin.jsp">

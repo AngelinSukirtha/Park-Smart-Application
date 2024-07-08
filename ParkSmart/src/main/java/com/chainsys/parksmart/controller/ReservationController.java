@@ -10,7 +10,6 @@ import com.chainsys.parksmart.dao.UserDAO;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
-import com.chainsys.parksmart.model.User;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,11 +27,12 @@ public class ReservationController {
 		spots.getCountSpotNumber();
 		Reservation reservation = new Reservation();
 		reservation.setNumberPlate(numberPlate);
-		System.out.println(reservation.getNumberPlate());
+
 		reservation.setStartDateTime(startDateTime);
-		System.out.println(reservation.getStartDateTime());
+		session.setAttribute("startDateTime", startDateTime);
+
 		reservation.setEndDateTime(endDateTime);
-		System.out.println(reservation.getEndDateTime());
+		session.setAttribute("endDateTime", endDateTime);
 
 		Transaction transaction = new Transaction();
 
@@ -42,10 +42,9 @@ public class ReservationController {
 		transaction.setReservationId(reservationId);
 
 		int userReservationId = userDAO.getReservationByReservationId(id);
-		System.out.println("userReservationId" + userReservationId);
 		session.setAttribute("reservationId", userReservationId);
 
-		return "transaction.jsp";
+		return "/transaction";
 	}
 
 }

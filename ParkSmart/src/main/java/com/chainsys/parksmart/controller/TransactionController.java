@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.parksmart.dao.UserDAO;
-import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Transaction;
 
 import jakarta.servlet.http.HttpSession;
@@ -19,26 +19,58 @@ public class TransactionController {
 
 	@GetMapping("/transaction")
 	public String handleTransaction(HttpSession session, Model model) {
-		System.out.println("transaction");
-		int id = (int) session.getAttribute("userId");
 
-		Reservation reservation = new Reservation();
 		Transaction transaction = new Transaction();
 
+		int id = (int) session.getAttribute("userId");
+
 		String vehicleType = (String) session.getAttribute("vehicleType");
-		System.out.println(vehicleType);
 
 		int reservationId = (int) session.getAttribute("reservationId");
-		System.out.println(reservationId);
 
-		userDAO.insertTransaction(reservation, transaction, vehicleType, reservationId, id);
-		userDAO.readTransactions(transaction);
+		String startDateTime = (String) session.getAttribute("startDateTime");
+		String endDateTime = (String) session.getAttribute("endDateTime");
+
+		userDAO.getPrice(transaction, vehicleType, startDateTime, endDateTime);
 		int price = transaction.getPrice();
+
+		userDAO.getCurrentTransactionTimeFormatted(transaction);
 		String transactionTime = transaction.getTransactionTime();
 
 		model.addAttribute("price", price);
 		model.addAttribute("transactionTime", transactionTime);
+
+		userDAO.insertTransaction(reservationId, id, price, transactionTime);
+		userDAO.readTransactions(transaction);
+		return "transaction.jsp";
+	}
+
+	@GetMapping("/pay")
+	public String handlePay(HttpSession session, @RequestParam("paymentMethod") String paymentMethod) {
+		Transaction transaction = new Transaction();
+		transaction.setPaymentMethod(paymentMethod);
+
+		int id = (int) session.getAttribute("userId");
+		userDAO.addPaymentMethod(transaction, id, paymentMethod);
 		return "payment.jsp";
+	}
+
+	@GetMapping("/payment")
+	public String handlePayment(HttpSession session, Model model, @RequestParam("cardNumber") String cardNumber,
+			@RequestParam("expiryDate") String expiryDate, @RequestParam("cvv") String cvv) {
+
+		Transaction transaction = new Transaction();
+
+		transaction.setCardNumber(cardNumber);
+		transaction.setExpiryDate(expiryDate);
+		transaction.setCvv(cvv);
+
+		int reservationId = (int) session.getAttribute("reservationId");
+
+		userDAO.updateTransaction(transaction, reservationId);
+		userDAO.readTransactions(transaction);
+
+		return "transactionConfirmation.jsp";
 	}
 
 }

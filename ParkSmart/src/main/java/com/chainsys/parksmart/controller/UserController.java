@@ -45,19 +45,22 @@ public class UserController {
 	}
 
 	@GetMapping("/login")
-	public String userLogin(@RequestParam("email") String email, HttpSession session) {
+	public String userLogin(@RequestParam("email") String email, HttpSession session,
+			@RequestParam("userPassword") String userPassword) {
 		User user = new User();
 		user.setEmail(email);
 
-		boolean loginSuccessful = userDAO.userLogin(user);
-		if (loginSuccessful) {
-			int userId = userDAO.getUserById(user);
-			session.setAttribute("userId", userId);
-			System.out.println(userId);
-			return "location.jsp";
+		if (email.equals("angelin@parkingspot.com") && userPassword.equals("Angelin1")) {
+			return "admin.jsp";
 		} else {
-			return "userRegister.jsp";
+			boolean loginSuccessful = userDAO.userLogin(user);
+			if (loginSuccessful) {
+				int userId = userDAO.getUserById(user);
+				session.setAttribute("userId", userId);
+				return "location.jsp";
+			} else {
+				return "userRegister.jsp";
+			}
 		}
 	}
-
 }

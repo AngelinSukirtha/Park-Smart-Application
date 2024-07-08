@@ -22,11 +22,9 @@ public interface UserDAO {
 
 	public List<String> readSpotNumbers(String locationName);
 
-	public void updateSpotStatus(Spots spots);
-
 	public int countSpotNumber(Spots spots, int id);
 
-	public List<Spots> readSpots();
+//	public List<Spots> readSpots();
 
 	public void insertReservation(Reservation reservation, int id);
 
@@ -38,8 +36,13 @@ public interface UserDAO {
 
 	public List<Reservation> readReservation(Reservation reservation);
 
-	public void insertTransaction(Reservation reservation, Transaction transaction, String vehicleType,
-			int reservationId, int id);
+	public int getPrice(Transaction transaction, String vehicleType, String startDateTime, String endDateTime);
+
+	public String getCurrentTransactionTimeFormatted(Transaction transaction);
+
+	public void insertTransaction(int reservationId, int id, int price, String transactionTime);
+
+	public void updateTransaction(Transaction transaction, int reservationId);
 
 	public void addPaymentMethod(Transaction transaction, int id, String paymentMethod);
 
@@ -48,4 +51,18 @@ public interface UserDAO {
 	public Transaction readTransactions(Transaction transaction);
 
 	public int getReservationByReservationId(int id);
+
+	public List<User> readUser();
+
+	public void deleteUser(User user);
+
+	public List<User> searchUser(String searchText);
+
+	public List<Spots> readSpotsAdmin();
+
+	public void updateSpotStatus(Spots spots);
+
+	public List<Spots> searchSpots(String searchText);
+
+	public List<Reservation> readReservations();
 }

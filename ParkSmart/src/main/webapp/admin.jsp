@@ -99,8 +99,12 @@ body {
 	}
 }
 
+nav {
+	margin-left: 15px;
+}
+
 nav img {
-	width: 80px;
+	width: 36px;
 	height: auto;
 }
 
@@ -117,23 +121,29 @@ nav h1 {
 }
 
 .card {
+	background-color: white;
 	width: calc(50% - 20px);
 	padding: 20px;
 	border: 1px solid rgb(232, 232, 232);
 	border-radius: 5px;
 	margin-bottom: 20px;
 	box-sizing: border-box;
+	width: calc(50% - 20px);
 }
 
 .card-header {
+	text-align: center;
 	font-size: 24px;
 	margin-bottom: 10px;
+	font-size: 24px;
+	font-size: 24px;
 }
 
 .button {
-	background-color: #555;
+	background-color: rgb(253, 220, 54);
+	margin-left: 80px;
 	border: none;
-	color: white;
+	color: black;
 	padding: 10px 20px;
 	text-align: center;
 	text-decoration: none;
@@ -142,10 +152,12 @@ nav h1 {
 	margin-top: 10px;
 	cursor: pointer;
 	border-radius: 5px;
+	border: none;
+	width: 250px;
 }
 
 .button:hover {
-	background-color: #777;
+	background-color: rgba(253, 220, 54, 0.854);
 }
 
 .topleft {
@@ -153,23 +165,25 @@ nav h1 {
 	margin: auto;
 	display: inline;
 	height: auto;
+	font-size: 40px;
 }
 </style>
 </head>
 <body>
 	<div class="sidebar">
 		<nav>
-			<img src="Photo/logo1.png" alt="Logo" class="topleft">
+			<img src="image/logo1.png" alt="Logo" class="topleft"
+				style="margin-top: 12px;">
 			<h1 class="topleft"
-				style="color: rgb(253, 220, 54); margin-top: 10px;">Parking</h1>
-			<h1 class="topleft" style="margin-top: 10px;">Spot</h1>
+				style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+			<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
 		</nav>
 		<br> <br> <br> <br>
-		<ul>
+		<ul style="font-size: 20px">
 			<li><a href="admin.jsp">Home</a></li>
-			<li><a href="aboutUs.html">About Us</a></li>
-			<li><a href="priceDetails.html">Pricing</a></li>
-			<li><a href="index.html">Logout</a></li>
+			<li><a href="aboutUs.jsp">About Us</a></li>
+			<li><a href="priceDetails.jsp">Pricing</a></li>
+			<li><a href="index.jsp">Logout</a></li>
 		</ul>
 	</div>
 
@@ -179,36 +193,30 @@ nav h1 {
 		</div>
 		<div class="container">
 			<div class="card">
-				<form action="AdminServlet" method="post">
-					<input type="hidden" name="action" value="userManagement">
-					<div class="card-header">User Management</div>
-					<a href="ParkingSpot.jsp"><button class="button">Manage</button></a>
+				<form action="/users" method="get">
+					<div class="card-header">Users</div>
+					<a href="userManagement.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 
 			<div class="card">
-				<form action="AdminServlet" method="post">
-					<input type="hidden" name="action" value="parkingSpotManagement">
-					<div class="card-header">Parking Spot Management</div>
-					<a href="ParkingSpotManagement.jsp"><button class="button">Manage</button></a>
+				<form action="/manageSpots" method="get">
+					<div class="card-header">Spots</div>
+					<a href="spotsManagement.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 
 			<div class="card">
-				<form action="AdminServlet" method="post">
-					<input type="hidden" name="action" value="reservationManagement">
-					<div class="card-header">Reservation Management</div>
-					<a href="ReservationApproval.jsp"><button class="button">Approve
-							Reservation</button></a>
+				<form action="/manageReservations" method="get">
+					<div class="card-header">Reservations</div>
+					<a href="ReservationApproval.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 
 			<div class="card">
-				<form action="AdminServlet" method="post">
-					<input type="hidden" name="action" value="transactionManagement">
-					<div class="card-header">Transaction Management</div>
-					<a href="TransactionManagement.jsp"><button class="button">Refund
-							Transaction</button></a>
+				<form action="/transactions" method="post">
+					<div class="card-header">Transactions</div>
+					<a href="TransactionManagement.jsp"><button class="button">Manage</button></a>
 				</form>
 			</div>
 		</div>

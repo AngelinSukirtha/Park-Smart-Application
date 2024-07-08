@@ -20,7 +20,7 @@ public class SpotsMapper implements RowMapper<Spots> {
 		spots.setAddress(rs.getString("address"));
 		spots.setVehicleType(rs.getString("vehicle_type"));
 		spots.setSpotNumber(rs.getString("spot_number"));
-		spots.setCountSpotNumber(rs.getInt("count_spot_number"));
+//		spots.setCountSpotNumber(rs.getInt("count_spot_number"));
 		spots.setSpotStatus(rs.getBoolean("spot_status"));
 		spots.setSpotNumber(rs.getString("spot_number"));
 		return spots;

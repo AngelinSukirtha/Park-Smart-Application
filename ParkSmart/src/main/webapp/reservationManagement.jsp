@@ -34,7 +34,7 @@ nav {
 }
 
 nav img {
-	width: 80px;
+	width: 26px;
 	height: auto;
 }
 

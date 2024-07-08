@@ -74,7 +74,6 @@ public class SpotsController {
 				int countSpotNumber = userDAO.countSpotNumber(spots, id);
 				spots.setCountSpotNumber(countSpotNumber);
 				session.setAttribute("countSpotNumber", countSpotNumber);
-				System.out.println("countSpotNumber" + countSpotNumber);
 			}
 		}
 		return "reservation.jsp";
