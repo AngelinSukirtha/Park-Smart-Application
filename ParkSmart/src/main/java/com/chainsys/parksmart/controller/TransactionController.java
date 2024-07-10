@@ -95,32 +95,21 @@ public class TransactionController {
 	}
 
 	@GetMapping("/transactionConfirmation")
-	public String handleTransactionConfirmation(HttpSession session, Model model) {
-		int id = (int) session.getAttribute("userId");
-		System.out.println(id);
+	public String handleTransactionConfirmation(Model model) {
 
 		userDAO.readTransactions(transaction);
 		int price = transaction.getPrice();
-		System.out.println(price);
 		String transactionTime = transaction.getTransactionTime();
-		System.out.println(transactionTime);
-		userDAO.readSpotNumber(spots);
-		String spotNumber = spots.getSpotNumber();
-		System.out.println(spotNumber);
 		userDAO.readUsers(user);
 		String userName = user.getUserName();
 		String phoneNumber = user.getPhoneNumber();
 		String email = user.getEmail();
-		System.out.println(userName);
-		System.out.println(phoneNumber);
-		System.out.println(email);
 
 		model.addAttribute("userName", userName);
 		model.addAttribute("phoneNumber", phoneNumber);
 		model.addAttribute("email", email);
 		model.addAttribute("price", price);
 		model.addAttribute("transactionTime", transactionTime);
-		model.addAttribute("spotNumber", spotNumber);
 
 		return "transactionConfirmation.jsp";
 

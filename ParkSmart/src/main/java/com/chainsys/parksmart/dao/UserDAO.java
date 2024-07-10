@@ -68,8 +68,6 @@ public interface UserDAO {
 
 	public List<Transaction> searchTransaction(String searchText);
 
-	public Spots readSpotNumber(Spots spots);
-
 	public User readUsers(User user);
 
 }

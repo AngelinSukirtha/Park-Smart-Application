@@ -1,23 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="com.chainsys.parksmart.model.*"%>
+<%@ page import="com.chainsys.parksmart.dao.*"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transaction Confirmation</title>
+<title>Add Location</title>
 <style>
 body {
-	background-image:
-		url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=pexels-veeterzy-39811.jpg&fm=jpg');
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-size: cover;
 	margin: 0;
+	padding: 0;
+	background-color: black;
+	color: white;
+}
+
+header {
+	background-color: #333;
+	color: white;
+	padding: 20px 0;
+	text-align: center;
 }
 
 .container {
-	max-width: 800px;
+	max-width: 600px;
 	margin: 20px auto;
 	padding: 20px;
 	background-color: #222;
@@ -30,27 +37,40 @@ h1, h2 {
 	color: white;
 }
 
-.confirmation {
-	text-align: center;
-	margin-top: 30px;
+form {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
 }
 
-.confirmation p {
+label {
 	margin-bottom: 10px;
+	font-weight: bold;
 	color: white;
 }
 
-.btn {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: rgb(218, 189, 43);
-	color: black;
-	text-decoration: none;
+input[type="text"] {
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #444;
 	border-radius: 5px;
-	transition: background-color 0.3s;
+	box-sizing: border-box;
+	background-color: #333;
+	color: white;
 }
 
-.btn:hover {
+input[type="submit"] {
+	margin-left: 150px;
+	width: 50%;
+	padding: 10px;
+	background-color: rgb(218, 189, 43);
+	color: black;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover {
 	background-color: rgb(196, 169, 34);
 }
 
@@ -79,15 +99,15 @@ nav a {
 	font-size: 17px;
 }
 
-nav .active, a:hover {
-	color: rgb(253, 220, 54);
-}
-
 .topleft {
 	float: left;
 	margin: auto;
 	display: inline;
 	height: auto;
+}
+
+nav .active, a:hover {
+	color: rgb(253, 220, 54);
 }
 
 .btn1 {
@@ -125,43 +145,14 @@ footer {
 			href="aboutUs.jsp" target="blank">AboutUs</a>
 	</nav>
 	<div class="container">
-		<form action="/transactionConfirmation" method="get">
-			<h2>Thank You for Your Reservation!</h2>
-			<div class="confirmation">
-				<p>Your transaction for a parking spot has been confirmed.</p>
-				<p>Reservation Details</p>
-				<p>
-					Name:
-					<%=request.getAttribute("userName")%></p>
-				<p>
-					Email:
-					<%=request.getAttribute("email")%></p>
-				<p>
-					Phone:
-					<%=request.getAttribute("phoneNumber")%></p>
-			</div>
-			<div class="confirmation">
-				<p>
-					Your payment of Rs.
-					<%=request.getAttribute("price")%>
-					has been processed.
-				</p>
-				<p>
-					Transaction time is
-					<%=request.getAttribute("transactionTime")%>
-				</p>
-			</div>
-			<div class="confirmation">
-				<a href="index.jsp" class="btn">Back to Home</a>
-			</div>
+		<h2>Add Location</h2>
+		<form action="/addLocations" method="post"
+			enctype="multipart/form-data">
+			Location Image: <input type="file" name="image" accept="image/*"
+				required><br> Location Name: <input type="text"
+				id="location" name="location" required> <input type="submit"
+				value="Add Location">
 		</form>
-		<div class="confirmation">
-			<form action="/sendEmail" method="get">
-				<input type="hidden" name="email"
-					value="<%=request.getAttribute("email")%>">
-				<button class="btn">Send Verification Email</button>
-			</form>
-		</div>
 	</div>
 	<footer
 		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">

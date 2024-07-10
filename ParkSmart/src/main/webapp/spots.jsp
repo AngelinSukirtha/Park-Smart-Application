@@ -207,8 +207,8 @@ footer {
 		<input type="hidden" name="vehicleType" id="vehicleTypeInput">
 		<div class="container">
 			<%
-			if (request.getAttribute("spotList") != null) {
-				ArrayList<String> spotList = (ArrayList<String>) request.getAttribute("spotList");
+			if (session.getAttribute("spotList") != null) {
+				ArrayList<String> spotList = (ArrayList<String>) session.getAttribute("spotList");
 			%>
 			<div class="grid">
 				<%
@@ -216,7 +216,6 @@ footer {
 					String spotId = "C" + i;
 					boolean isOccupied = false;
 					for (String spot : spotList) {
-						System.out.println("spot" + spot);
 						if (spot.equals(spotId)) {
 					isOccupied = true;
 					break;
@@ -280,7 +279,7 @@ footer {
 			%>
 		</div>
 	</form>
-	
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>

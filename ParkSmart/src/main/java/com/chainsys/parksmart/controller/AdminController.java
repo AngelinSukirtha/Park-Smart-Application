@@ -1,13 +1,19 @@
 package com.chainsys.parksmart.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.chainsys.parksmart.dao.UserDAO;
+import com.chainsys.parksmart.dao.UserImpl;
+import com.chainsys.parksmart.model.Locations;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
@@ -29,6 +35,9 @@ public class AdminController {
 
 	@Autowired
 	Reservation reservation;
+
+	@Autowired
+	UserImpl userImpl;
 
 	@GetMapping("/users")
 	public String handleUsers(HttpSession session, Model model) {
@@ -63,7 +72,7 @@ public class AdminController {
 
 	@GetMapping("/updateSpotStatus")
 	public String updateSpots(Model model, @RequestParam("spotId") int spotId,
-			@RequestParam("spotStatus") boolean spotStatus) {
+			@RequestParam("spotStatus") String spotStatus) {
 		spots.setSpotId(spotId);
 		spots.setSpotStatus(spotStatus);
 		userDAO.updateSpotStatus(spots);
@@ -127,6 +136,19 @@ public class AdminController {
 		List<Transaction> list = userDAO.searchTransaction(searchText);
 		model.addAttribute("list", list);
 		return "transactionManagement.jsp";
+	}
+
+	@PostMapping("/addLocations")
+	public String addLocations(@RequestParam("image") MultipartFile imageFile,
+			@RequestParam("location") String location) throws IOException {
+		if (!imageFile.isEmpty()) {
+			byte[] imageBytes = imageFile.getBytes();
+			Locations locations = new Locations();
+			locations.setLocationImage(imageBytes);
+			locations.setLocation(location);
+			userImpl.insertLocations(locations);
+		}
+		return "adminLocation.jsp";
 	}
 
 }

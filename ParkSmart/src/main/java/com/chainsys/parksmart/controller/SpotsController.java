@@ -56,13 +56,14 @@ public class SpotsController {
 		}
 
 		session.setAttribute("address", address);
+		String locationName = (String) session.getAttribute("locationName");
 
 		if (address.equals("Mylapore") || address.equals("Velachery") || address.equals("Perungudi")
 				|| address.equals("Alanganallur") || address.equals("Kalavasal") || address.equals("Periyar")
 				|| address.equals("Jayanagar") || address.equals("Whitefield") || address.equals("Domlur")) {
 
-			List<String> spotList = userDAO.readSpotNumbers(address);
-			model.addAttribute("spotList", spotList);
+			List<String> spotList = userDAO.readSpotNumbers(locationName);
+			session.setAttribute("spotList", spotList);
 			return "spots.jsp";
 		} else {
 			return "location.jsp";
@@ -104,6 +105,7 @@ public class SpotsController {
 
 				int countSpotNumber = userDAO.countSpotNumber(spots, id);
 				spots.setCountSpotNumber(countSpotNumber);
+				System.out.println(countSpotNumber);
 				session.setAttribute("countSpotNumber", countSpotNumber);
 			}
 		}

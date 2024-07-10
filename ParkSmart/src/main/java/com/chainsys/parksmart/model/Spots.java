@@ -11,10 +11,10 @@ public class Spots {
 	String vehicleType;
 	String spotNumber;
 	int countSpotNumber;
-	boolean spotStatus = true;
+	String spotStatus;
 
 	public Spots(int userId, int spotId, String locationName, String address, String vehicleType, String spotNumber,
-			boolean spotStatus) {
+			String spotStatus) {
 		super();
 		this.userId = userId;
 		this.spotId = spotId;
@@ -94,11 +94,11 @@ public class Spots {
 		this.countSpotNumber = countSpotNumber;
 	}
 
-	public boolean getSpotStatus() {
+	public String getSpotStatus() {
 		return spotStatus;
 	}
 
-	public void setSpotStatus(boolean spotStatus) {
+	public void setSpotStatus(String spotStatus) {
 		this.spotStatus = spotStatus;
 	}
 

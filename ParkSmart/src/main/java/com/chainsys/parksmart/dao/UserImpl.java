@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.chainsys.parksmart.mapper.*;
+import com.chainsys.parksmart.model.Locations;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.model.Transaction;
@@ -52,16 +53,15 @@ public class UserImpl implements UserDAO {
 
 	public void insertSpots(Spots spots, int id, String locationName, String address, String vehicleType,
 			String spotNumber) {
-		String query = "INSERT INTO spots (user_id, location_name, address, vehicle_type, spot_number, spot_status) VALUES (?, ?, ?, ?, ?, ?)";
-		Object[] params = { id, locationName, address, vehicleType, spotNumber, spots.getSpotStatus() };
+		String query = "INSERT INTO spots (user_id, location_name, address, vehicle_type, spot_number, spot_status) VALUES (?, ?, ?, ?, ?, 'occupied')";
+		Object[] params = { id, locationName, address, vehicleType, spotNumber };
 		jdbcTemplate.update(query, params);
 	}
 
 	public List<String> readSpotNumbers(String locationName) {
-		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
+		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = 'occupied'";
 		List<String> spotList = jdbcTemplate.queryForList(query, String.class, locationName);
 		return spotList;
-
 	}
 
 	public void updateSpotStatus(Spots spots) {
@@ -70,10 +70,16 @@ public class UserImpl implements UserDAO {
 		jdbcTemplate.update(update, params);
 	}
 
+//	public int countSpotNumber(Spots spots, int id) {
+//		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? and spot_status='occupied'";
+//		Integer spotCount = jdbcTemplate.queryForObject(query, Integer.class, id);
+//		return spotCount;
+//	}
+
 	public int countSpotNumber(Spots spots, int id) {
-		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? and spot_status=1";
+		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? AND spot_status = 'occupied'";
 		Integer spotCount = jdbcTemplate.queryForObject(query, Integer.class, id);
-		return spotCount;
+		return spotCount != null ? spotCount : 0;
 	}
 
 	public int getReservationByReservationId(int id) {
@@ -152,6 +158,12 @@ public class UserImpl implements UserDAO {
 		String update = "UPDATE transaction SET payment_method = ?, payment_status='paid' WHERE user_id = ?";
 		Object[] params = { paymentMethod, id };
 		jdbcTemplate.update(update, params);
+	}
+
+	public void insertLocations(Locations locations) {
+		String query = "INSERT INTO locations(location_id, location, location_image, address_name) VALUES (?,?,?,'')";
+		Object[] params = { locations.getLocationId(), locations.getLocation(), locations.getLocationImage() };
+		jdbcTemplate.update(query, params);
 	}
 
 	public LocalDateTime parseDateTime(String dateTimeString) {
@@ -260,21 +272,8 @@ public class UserImpl implements UserDAO {
 		return transaction;
 	}
 
-//	public List<String> readSpotNumber(int id) {
-//		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
-//		List<String> spotList = jdbcTemplate.queryForList(query, String.class, id);
-//		return spotList;
-//	}
-
-	public Spots readSpotNumber(Spots spots) {
-		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = true";
-		Object[] params = { spots.getUserId() };
-		jdbcTemplate.queryForList(query, String.class, params);
-		return spots;
-	}
-
 	public User readUsers(User user) {
-		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ? and status = 1";
+		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ? and status = 'occupied'";
 		try {
 			Object[] params = { user.getUserId() };
 			jdbcTemplate.queryForObject(read, new UserMapper(), params);
