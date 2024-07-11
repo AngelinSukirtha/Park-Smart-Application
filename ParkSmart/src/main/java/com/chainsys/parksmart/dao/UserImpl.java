@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.chainsys.parksmart.mapper.*;
+import com.chainsys.parksmart.model.Addresses;
 import com.chainsys.parksmart.model.Locations;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
@@ -160,12 +161,6 @@ public class UserImpl implements UserDAO {
 		jdbcTemplate.update(update, params);
 	}
 
-	public void insertLocations(Locations locations) {
-		String query = "INSERT INTO locations(location_id, location, location_image, address_name) VALUES (?,?,?,'')";
-		Object[] params = { locations.getLocationId(), locations.getLocation(), locations.getLocationImage() };
-		jdbcTemplate.update(query, params);
-	}
-
 	public LocalDateTime parseDateTime(String dateTimeString) {
 		if (dateTimeString != null) {
 			return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -281,6 +276,36 @@ public class UserImpl implements UserDAO {
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+
+	public void insertLocations(Locations locations) {
+		String query = "INSERT INTO locations(location_id, location, location_image) VALUES (?,?,?)";
+		Object[] params = { locations.getLocationId(), locations.getLocation(), locations.getLocationImage() };
+		jdbcTemplate.update(query, params);
+	}
+
+	public List<Locations> readLocations() {
+		String read = "SELECT location_id, location, location_image FROM locations";
+		return jdbcTemplate.query(read, new LocationsMapper());
+	}
+
+	public Integer getLocationById(Locations locations) {
+		String query = "SELECT location_id FROM locations WHERE location=?";
+		Object[] details = {locations.getLocation() };
+		int existingLocation = jdbcTemplate.queryForObject(query, Integer.class, details);
+		return existingLocation;
+	}
+
+	public void insertAddresses(Addresses addresses, int locationId) {
+		System.err.println("<--->");
+		String query = "INSERT INTO addresses(address_id, location_id, address_name) VALUES (?,?,?)";
+		Object[] params = { 0, locationId, addresses.getAddressName() };
+		jdbcTemplate.update(query, params);
+	}
+
+	public List<Addresses> readAddress() {
+		String read = "SELECT address_id, location_id, address_name FROM addresses";
+		return jdbcTemplate.query(read, new AddressesMapper());
 	}
 
 }

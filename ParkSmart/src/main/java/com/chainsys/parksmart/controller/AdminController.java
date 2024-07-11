@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.chainsys.parksmart.dao.UserDAO;
 import com.chainsys.parksmart.dao.UserImpl;
+import com.chainsys.parksmart.model.Addresses;
 import com.chainsys.parksmart.model.Locations;
 import com.chainsys.parksmart.model.Reservation;
 import com.chainsys.parksmart.model.Spots;
@@ -140,15 +141,46 @@ public class AdminController {
 
 	@PostMapping("/addLocations")
 	public String addLocations(@RequestParam("image") MultipartFile imageFile,
-			@RequestParam("location") String location) throws IOException {
+			@RequestParam("location") String location, Model model) throws IOException {
 		if (!imageFile.isEmpty()) {
 			byte[] imageBytes = imageFile.getBytes();
 			Locations locations = new Locations();
 			locations.setLocationImage(imageBytes);
 			locations.setLocation(location);
 			userImpl.insertLocations(locations);
+			List<Locations> list = userImpl.readLocations();
+			model.addAttribute("list", list);
 		}
 		return "adminLocation.jsp";
+	}
+
+	@GetMapping("/manageLocations")
+	public String handleLocations(Model model) {
+		List<Locations> list = userImpl.readLocations();
+		model.addAttribute("list", list);
+		return "adminLocation.jsp";
+	}
+
+//	@GetMapping("/selectLocations")
+//	public String selectLocations(HttpSession session, Model model) {
+//		Locations locations = new Locations();
+//		int locationId = userImpl.getLocationById(locations);
+//		locations.setLocationId(locationId);
+//		System.out.println("locationId" + locations.getLocationId());
+//		session.setAttribute("locationId", locationId);
+//		return "/manageAddress";
+//	}
+
+	@GetMapping("/manageAddress")
+	public String handleAddress(HttpSession session, Model model, @RequestParam("locationId") int locationId, @RequestParam("address") String addressName) {
+		System.err.println("--------");
+	System.out.println("add name --- > "+ addressName);
+		System.out.println("locationId" + locationId);
+		Addresses addresses = new Addresses();
+		userImpl.insertAddresses(addresses, locationId);
+		List<Addresses> list = userImpl.readAddress();
+		model.addAttribute("list", list);
+		return "adminAddress.jsp";
 	}
 
 }
