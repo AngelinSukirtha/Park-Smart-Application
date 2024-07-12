@@ -68,6 +68,6 @@ public interface UserDAO {
 
 	public List<Transaction> searchTransaction(String searchText);
 
-	public User readUsers(User user);
+	public User readUsers(int id);
 
 }

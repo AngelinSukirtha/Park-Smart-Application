@@ -95,15 +95,15 @@ public class TransactionController {
 	}
 
 	@GetMapping("/transactionConfirmation")
-	public String handleTransactionConfirmation(Model model) {
-
+	public String handleTransactionConfirmation(HttpSession session, Model model) {
+		int id = (int) session.getAttribute("userId");
 		userDAO.readTransactions(transaction);
 		int price = transaction.getPrice();
 		String transactionTime = transaction.getTransactionTime();
-		userDAO.readUsers(user);
-		String userName = user.getUserName();
-		String phoneNumber = user.getPhoneNumber();
-		String email = user.getEmail();
+		User userData = userDAO.readUsers(id);
+		String userName = userData.getUserName();
+		String phoneNumber = userData.getPhoneNumber();
+		String email = userData.getEmail();
 
 		model.addAttribute("userName", userName);
 		model.addAttribute("phoneNumber", phoneNumber);
@@ -112,7 +112,6 @@ public class TransactionController {
 		model.addAttribute("transactionTime", transactionTime);
 
 		return "transactionConfirmation.jsp";
-
 	}
 
 }

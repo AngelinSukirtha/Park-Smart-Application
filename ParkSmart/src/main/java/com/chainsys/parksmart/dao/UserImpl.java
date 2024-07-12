@@ -100,7 +100,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Reservation> readReservation() {
-		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status FROM reservation";
+		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active FROM reservation";
 		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
 		return reservation;
 	}
@@ -193,7 +193,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Reservation> readReservations() {
-		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, fine_amount, reservation_status FROM reservation";
+		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, fine_amount, reservation_status, is_active FROM reservation";
 		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
 		return reservation;
 	}
@@ -269,12 +269,11 @@ public class UserImpl implements UserDAO {
 		return transaction;
 	}
 
-	public User readUsers(User user) {
+	public User readUsers(int id) {
 		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ?";
 		try {
-			Object[] params = { user.getUserId() };
-			jdbcTemplate.queryForObject(read, new UserMapper(), params);
-			return user;
+			Object[] params = { id };
+			return jdbcTemplate.queryForObject(read, new PaymentMapper(), params);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -333,5 +332,4 @@ public class UserImpl implements UserDAO {
 		String sql = "UPDATE reservation SET fine_amount = ? WHERE reservation_id = ?";
 		jdbcTemplate.update(sql, fineAmount, reservationId);
 	}
-
 }
