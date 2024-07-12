@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="com.chainsys.parksmart.model.*"%>
+<%@ page import="com.chainsys.parksmart.dao.*"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.Base64"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,15 +14,15 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: white;
+	background-color: #f4f4f4;
 }
 
 .container {
 	max-width: 1200px;
 	margin: 20px auto;
-	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	display: inline-block;
 }
 
 .card {
@@ -114,6 +118,12 @@ nav .active, a:hover {
 footer {
 	margin-top: 120px;
 }
+
+.containers {
+	text-align: center;
+	width: 80%;
+	margin: 0 auto;
+}
 </style>
 </head>
 <body>
@@ -129,37 +139,37 @@ footer {
 	</nav>
 	<h1 style="text-align: center; margin-top: 50px">AVAILABLE
 		LOCATIONS</h1>
-	<div class="container" style="margin-top: 50px;">
-		<form action="/locationName" method="get" class="card">
-			<input type="hidden" name="locationName" value="Chennai">
-			<button style="border: none;">
-				<img src="image/chennai1.jpg" width="300" height="300"
-					alt="Location 1">
-			</button>
-			<div class="card-content">
-				<h3 class="card-title" style="text-align: center;">CHENNAI</h3>
-			</div>
-		</form>
-		<form action="/locationName" method="get" class="card">
-			<input type="hidden" name="locationName" value="Madurai">
-			<button style="border: none;">
-				<img src="image/madurai2.jpg" width="300" height="300"
-					alt="Location 2">
-			</button>
-			<div class="card-content">
-				<h3 class="card-title" style="text-align: center;">MADURAI</h3>
-			</div>
-		</form>
-		<form action="/locationName" method="get" class="card">
-			<input type="hidden" name="locationName" value="Bangalore">
-			<button style="border: none;">
-				<img src="image/bangalore.jpg" width="300" height="300"
-					alt="Location 1">
-			</button>
-			<div class="card-content">
-				<h3 class="card-title" style="text-align: center;">BANGALORE</h3>
-			</div>
-		</form>
+	<div class="containers">
+		<%
+		List<Locations> list = (List<Locations>) request.getAttribute("list");
+		if (list != null) {
+			for (Locations location : list) {
+				if (location != null) {
+			byte[] locationImage = location.getLocationImage();
+			if (locationImage != null) {
+				String base64Image = Base64.getEncoder().encodeToString(locationImage);
+		%>
+
+		<div class="container" style="margin-top: 50px;">
+			<form action="/locationName" method="get" class="card">
+				<input type="hidden" name="locationId"
+					value="<%=location.getLocationId()%>">
+				<button style="border: none;">
+					<img src="data:image/jpeg;base64, <%=base64Image%>"
+						alt="Location Image" width="300" height="300">
+				</button>
+				<div class="card-content">
+					<h3 class="card-title" style="text-align: center;"><%=location.getLocation()%></h3>
+				</div>
+			</form>
+		</div>
+
+		<%
+		}
+		}
+		}
+		}
+		%>
 	</div>
 	<footer
 		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">

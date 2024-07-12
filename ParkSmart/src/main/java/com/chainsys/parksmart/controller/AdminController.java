@@ -91,6 +91,17 @@ public class AdminController {
 
 	@GetMapping("/manageReservations")
 	public String handleReservations(Model model) {
+		List<Reservation> reservations = userImpl.findReservationsToCalculateFine();
+
+		int reservationId = reservation.getReservationId();
+		reservation.setReservationId(reservationId);
+		System.out.println("reservationId" + reservationId);
+
+		for (Reservation reservation : reservations) {
+			Integer fineAmount = userImpl.calculateFine(reservation);
+
+			userImpl.updateFineAmount(reservation.getReservationId(), fineAmount);
+		}
 		List<Reservation> list = userDAO.readReservations();
 		model.addAttribute("list", list);
 		return "reservationManagement.jsp";
@@ -109,17 +120,6 @@ public class AdminController {
 		reservation.setReservationId(reservationId);
 		reservation.setReservationStatus(reservationStatus);
 		userDAO.updateReservationStatus(reservation);
-		List<Reservation> list = userDAO.readReservations();
-		model.addAttribute("list", list);
-		return "reservationManagement.jsp";
-	}
-
-	@GetMapping("/updateReservationActive")
-	public String updateReservationActive(Model model, @RequestParam("reservationId") int reservationId,
-			@RequestParam("isActive") boolean isActive) {
-		reservation.setReservationId(reservationId);
-		reservation.setActive(isActive);
-		userDAO.updateIsActive(reservation);
 		List<Reservation> list = userDAO.readReservations();
 		model.addAttribute("list", list);
 		return "reservationManagement.jsp";
@@ -161,24 +161,20 @@ public class AdminController {
 		return "adminLocation.jsp";
 	}
 
-//	@GetMapping("/selectLocations")
-//	public String selectLocations(HttpSession session, Model model) {
-//		Locations locations = new Locations();
-//		int locationId = userImpl.getLocationById(locations);
-//		locations.setLocationId(locationId);
-//		System.out.println("locationId" + locations.getLocationId());
-//		session.setAttribute("locationId", locationId);
-//		return "/manageAddress";
-//	}
-
 	@GetMapping("/manageAddress")
-	public String handleAddress(HttpSession session, Model model, @RequestParam("locationId") int locationId, @RequestParam("address") String addressName) {
-		System.err.println("--------");
-	System.out.println("add name --- > "+ addressName);
-		System.out.println("locationId" + locationId);
+	public String handleAddress(Model model, @RequestParam("locationId") int locationId, HttpSession session) {
+		session.setAttribute("locationId", locationId);
+		List<Addresses> list = userImpl.readAddress(locationId);
+		model.addAttribute("list", list);
+		return "adminAddress.jsp";
+	}
+
+	@GetMapping("/addAddress")
+	public String addAddress(Model model, HttpSession session, @RequestParam("address") String address) {
+		int locationId = (int) session.getAttribute("locationId");
 		Addresses addresses = new Addresses();
-		userImpl.insertAddresses(addresses, locationId);
-		List<Addresses> list = userImpl.readAddress();
+		userImpl.insertAddresses(addresses, locationId, address);
+		List<Addresses> list = userImpl.readAddress(locationId);
 		model.addAttribute("list", list);
 		return "adminAddress.jsp";
 	}

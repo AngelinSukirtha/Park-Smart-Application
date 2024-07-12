@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 import com.chainsys.parksmart.dao.UserDAO;
+import com.chainsys.parksmart.dao.UserImpl;
+import com.chainsys.parksmart.model.Addresses;
 import com.chainsys.parksmart.model.Spots;
 import com.chainsys.parksmart.validation.Validation;
 
@@ -26,55 +28,35 @@ public class SpotsController {
 	@Autowired
 	Validation validation;
 
+	@Autowired
+	UserImpl userImpl;
+
 	@GetMapping("/locationName")
-	public String locationName(@RequestParam("locationName") String locationName, HttpSession session) {
-		spots.setLocationName(locationName);
-
-		if (!validation.validateLocationName(locationName)) {
-			return "location.jsp";
-		}
-
-		session.setAttribute("locationName", locationName);
-		switch (locationName) {
-		case "Chennai":
-			return "addressChennai.jsp";
-		case "Madurai":
-			return "addressMadurai.jsp";
-		case "Bangalore":
-			return "addressBangalore.jsp";
-		default:
-			return "index.jsp";
-		}
+	public String handleLocations(Model model, @RequestParam("locationId") int locationId, HttpSession session) {
+		session.setAttribute("locationId", locationId);
+		List<Addresses> list = userImpl.readAddress(locationId);
+		model.addAttribute("list", list);
+		return "address.jsp";
 	}
 
 	@GetMapping("/address")
 	public String address(@RequestParam("address") String address, Model model, HttpSession session) {
-		spots.setAddress(address);
-
-		if (!validation.validateAddress(address)) {
-			return "location.jsp";
-		}
-
+		spots.setAddress_name(address);
 		session.setAttribute("address", address);
-		String locationName = (String) session.getAttribute("locationName");
-
-		if (address.equals("Mylapore") || address.equals("Velachery") || address.equals("Perungudi")
-				|| address.equals("Alanganallur") || address.equals("Kalavasal") || address.equals("Periyar")
-				|| address.equals("Jayanagar") || address.equals("Whitefield") || address.equals("Domlur")) {
-
-			List<String> spotList = userDAO.readSpotNumbers(locationName);
-			session.setAttribute("spotList", spotList);
-			return "spots.jsp";
-		} else {
-			return "location.jsp";
-		}
-
+		int locationId = (int) session.getAttribute("locationId");
+		String locationName = userImpl.getLocationByLocationId(locationId);
+		spots.setLocation(locationName);
+		List<String> spotList = userDAO.readSpotNumbers(locationName);
+		session.setAttribute("spotList", spotList);
+		return "spots.jsp";
 	}
 
 	@GetMapping("/spots")
 	public String selectedSpots(HttpSession session, String[] selectedSpots) {
 		int id = (int) session.getAttribute("userId");
-		String locationName = (String) session.getAttribute("locationName");
+		int locationId = (int) session.getAttribute("locationId");
+		String locationName = userImpl.getLocationByLocationId(locationId);
+		spots.setLocation(locationName);
 		String address = (String) session.getAttribute("address");
 
 		for (String spotNumber : selectedSpots) {
@@ -105,7 +87,6 @@ public class SpotsController {
 
 				int countSpotNumber = userDAO.countSpotNumber(spots, id);
 				spots.setCountSpotNumber(countSpotNumber);
-				System.out.println(countSpotNumber);
 				session.setAttribute("countSpotNumber", countSpotNumber);
 			}
 		}

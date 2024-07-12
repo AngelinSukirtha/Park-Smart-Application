@@ -1,12 +1,17 @@
 package com.chainsys.parksmart.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.parksmart.dao.UserDAO;
+import com.chainsys.parksmart.dao.UserImpl;
+import com.chainsys.parksmart.model.Locations;
 import com.chainsys.parksmart.model.User;
 import com.chainsys.parksmart.validation.Validation;
 
@@ -23,6 +28,9 @@ public class UserController {
 
 	@Autowired
 	Validation validation;
+
+	@Autowired
+	UserImpl userImpl;
 
 	@RequestMapping("/")
 	public String home() {
@@ -59,7 +67,7 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String userLogin(@RequestParam("email") String email, HttpSession session,
-			@RequestParam("userPassword") String userPassword) {
+			@RequestParam("userPassword") String userPassword, Model model) {
 
 		if (!validation.validateEmail(email) || !validation.validateUserPassword(userPassword)) {
 			return "userLogin.jsp";
@@ -74,6 +82,8 @@ public class UserController {
 			if (loginSuccessful) {
 				int userId = userDAO.getUserById(user);
 				session.setAttribute("userId", userId);
+				List<Locations> list = userImpl.readLocations();
+				model.addAttribute("list", list);
 				return "location.jsp";
 			} else {
 				return "userRegister.jsp";

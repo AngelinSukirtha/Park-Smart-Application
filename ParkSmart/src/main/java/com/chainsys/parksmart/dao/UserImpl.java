@@ -3,6 +3,7 @@ package com.chainsys.parksmart.dao;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +55,22 @@ public class UserImpl implements UserDAO {
 
 	public void insertSpots(Spots spots, int id, String locationName, String address, String vehicleType,
 			String spotNumber) {
-		String query = "INSERT INTO spots (user_id, location_name, address, vehicle_type, spot_number, spot_status) VALUES (?, ?, ?, ?, ?, 'occupied')";
+		String query = "INSERT INTO spots (user_id, location, address_name, vehicle_type, spot_number, spot_status) VALUES (?, ?, ?, ?, ?, 'occupied')";
 		Object[] params = { id, locationName, address, vehicleType, spotNumber };
 		jdbcTemplate.update(query, params);
 	}
 
 	public List<String> readSpotNumbers(String locationName) {
-		String query = "SELECT spot_number FROM spots WHERE location_name = ? AND spot_status = 'occupied'";
+		String query = "SELECT spot_number FROM spots WHERE location = ? AND spot_status = 'occupied'";
 		List<String> spotList = jdbcTemplate.queryForList(query, String.class, locationName);
 		return spotList;
+	}
+
+	public String getLocationByLocationId(int locationId) {
+		String query = "SELECT location FROM locations WHERE location_id = ?";
+		Object[] details = { locationId };
+		String existingLocation = jdbcTemplate.queryForObject(query, String.class, details);
+		return existingLocation;
 	}
 
 	public void updateSpotStatus(Spots spots) {
@@ -70,12 +78,6 @@ public class UserImpl implements UserDAO {
 		Object[] params = { spots.getSpotStatus(), spots.getSpotId() };
 		jdbcTemplate.update(update, params);
 	}
-
-//	public int countSpotNumber(Spots spots, int id) {
-//		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? and spot_status='occupied'";
-//		Integer spotCount = jdbcTemplate.queryForObject(query, Integer.class, id);
-//		return spotCount;
-//	}
 
 	public int countSpotNumber(Spots spots, int id) {
 		String query = "SELECT COUNT(spot_number) FROM spots WHERE user_id = ? AND spot_status = 'occupied'";
@@ -98,7 +100,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Reservation> readReservation() {
-		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active FROM reservation";
+		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status FROM reservation";
 		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
 		return reservation;
 	}
@@ -191,7 +193,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Reservation> readReservations() {
-		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, reservation_status, is_active FROM reservation";
+		String read = "SELECT user_id, reservation_id, number_plate, start_date_time, end_date_time, fine_amount, reservation_status FROM reservation";
 		List<Reservation> reservation = jdbcTemplate.query(read, new ReservationMapper());
 		return reservation;
 	}
@@ -216,7 +218,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Spots> readSpotsAdmin() {
-		String read = "SELECT user_id, spot_id, location_name, address, vehicle_type, spot_number, spot_status FROM spots";
+		String read = "SELECT user_id, spot_id, location, address_name, vehicle_type, spot_number, spot_status FROM spots";
 		List<Spots> spots = jdbcTemplate.query(read, new SpotsMapper());
 		return spots;
 	}
@@ -238,9 +240,9 @@ public class UserImpl implements UserDAO {
 	}
 
 	public List<Spots> searchSpots(String searchText) {
-		String search = "SELECT user_id, spot_id, location_name, address, vehicle_type, spot_number, spot_status "
+		String search = "SELECT user_id, spot_id, location, address_name, vehicle_type, spot_number, spot_status "
 				+ "FROM spots "
-				+ "WHERE user_id = ? OR spot_id=? OR location_name LIKE ? OR address LIKE ? OR vehicle_type LIKE ? OR spot_number LIKE ? OR spot_status LIKE ?";
+				+ "WHERE user_id = ? OR spot_id=? OR location LIKE ? OR address_name LIKE ? OR vehicle_type LIKE ? OR spot_number LIKE ? OR spot_status LIKE ?";
 		Object[] params = { searchText, searchText, "%" + searchText + "%", "%" + searchText + "%",
 				"%" + searchText + "%", "%" + searchText + "%", "%" + searchText + "%" };
 		List<Spots> spotsList = jdbcTemplate.query(search, new SpotsMapper(), params);
@@ -268,7 +270,7 @@ public class UserImpl implements UserDAO {
 	}
 
 	public User readUsers(User user) {
-		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ? and status = 'occupied'";
+		String read = "SELECT user_name, phone_number, email FROM user WHERE user_id = ?";
 		try {
 			Object[] params = { user.getUserId() };
 			jdbcTemplate.queryForObject(read, new UserMapper(), params);
@@ -291,21 +293,45 @@ public class UserImpl implements UserDAO {
 
 	public Integer getLocationById(Locations locations) {
 		String query = "SELECT location_id FROM locations WHERE location=?";
-		Object[] details = {locations.getLocation() };
+		Object[] details = { locations.getLocation() };
 		int existingLocation = jdbcTemplate.queryForObject(query, Integer.class, details);
 		return existingLocation;
 	}
 
-	public void insertAddresses(Addresses addresses, int locationId) {
-		System.err.println("<--->");
+	public void insertAddresses(Addresses addresses, int locationId, String address) {
 		String query = "INSERT INTO addresses(address_id, location_id, address_name) VALUES (?,?,?)";
-		Object[] params = { 0, locationId, addresses.getAddressName() };
+		Object[] params = { addresses.getAddressId(), locationId, address };
 		jdbcTemplate.update(query, params);
 	}
 
-	public List<Addresses> readAddress() {
-		String read = "SELECT address_id, location_id, address_name FROM addresses";
-		return jdbcTemplate.query(read, new AddressesMapper());
+	public List<Addresses> readAddress(int locationId) {
+		String read = "SELECT address_name FROM addresses where location_id=?";
+		Object[] details = { locationId };
+		return jdbcTemplate.query(read, new AddressesMapper(), details);
+	}
+
+	public List<Reservation> findReservationsToCalculateFine() {
+		String sql = "SELECT * FROM reservation WHERE NOW() > end_date_time";
+		return jdbcTemplate.query(sql, new ReservationMapper());
+	}
+
+	public int calculateFine(Reservation reservation) {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+			LocalDateTime endDateTime = LocalDateTime.parse(reservation.getEndDateTime(), formatter);
+			LocalDateTime currentDateTime = LocalDateTime.now();
+			long hoursDifference = java.time.Duration.between(endDateTime, currentDateTime).toHours();
+			int fineRatePerHour = 5;
+			return (int) (hoursDifference * fineRatePerHour);
+		} catch (DateTimeParseException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public void updateFineAmount(int reservationId, int fineAmount) {
+		String sql = "UPDATE reservation SET fine_amount = ? WHERE reservation_id = ?";
+		jdbcTemplate.update(sql, fineAmount, reservationId);
 	}
 
 }

@@ -8,78 +8,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Parking Spots Management</title>
-<!-- <style>
-body {
-	margin: 0;
-}
-
-.center {
-	text-align: center;
-	margin: auto;
-	font-size: 15px;
-}
-
-table {
-	margin-top: 20px;
-	margin-left: 100px;
-	border-collapse: collapse;
-	width: 80%;
-}
-
-nav {
-	background-color: black;
-	opacity: 0.9;
-	overflow: hidden;
-}
-
-nav img {
-	width: 26px;
-	height: auto;
-}
-
-nav h1 {
-	color: white;
-	display: inline;
-}
-
-nav a {
-	float: right;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-	font-size: 17px;
-}
-
-.topleft {
-	float: left;
-	margin: auto;
-	display: inline;
-	height: auto;
-}
-
-.btn1 {
-	display: block;
-	width: 80px;
-	margin: 5px 5px;
-	padding: 10px 20px;
-	text-align: center;
-	background-color: rgb(253, 220, 54);
-	color: black;
-	text-decoration: none;
-	border-radius: 5px;
-	transition: background-color 0.3s;
-}
-
-.btn1:hover {
-	background-color: rgba(253, 220, 54, 0.854);
-	color: black;
-}
-
-footer {
-	margin-top: 402px;
-}
-</style> -->
 <style>
 body {
 	background-color: rgb(230, 230, 230);
@@ -223,8 +151,8 @@ footer {
 				style="color: black; background-color: white; text-align: center;">
 				<td><%=spots.getUserId()%></td>
 				<td><%=spots.getSpotId()%></td>
-				<td><%=spots.getLocationName()%></td>
-				<td><%=spots.getAddress()%></td>
+				<td><%=spots.getLocation()%></td>
+				<td><%=spots.getAddress_name()%></td>
 				<td><%=spots.getVehicleType()%></td>
 				<td><%=spots.getSpotNumber()%></td>
 				<td><%=spots.getSpotStatus()%></td>

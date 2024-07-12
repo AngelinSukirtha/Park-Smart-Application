@@ -12,8 +12,6 @@ public class AddressesMapper implements RowMapper<Addresses> {
 	@Override
 	public Addresses mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Addresses addresses = new Addresses();
-		addresses.setAddressId(rs.getInt("address_id"));
-		addresses.setLocationId(rs.getInt("location_id"));
 		addresses.setAddressName(rs.getString("address_name"));
 		return addresses;
 	}

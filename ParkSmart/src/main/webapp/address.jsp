@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.chainsys.parksmart.model.*"%>
+<%@ page import="com.chainsys.parksmart.dao.*"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +20,7 @@ body {
 	max-width: 600px;
 	margin: 50px auto;
 	padding: 20px;
-	background-color: white;
+	background-color: #fff;
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	text-align: center;
@@ -57,7 +60,7 @@ label {
 }
 
 .select-button:hover {
-	background-color: rgb(196, 169, 34);;
+	background-color: rgb(196, 169, 34);
 }
 
 nav {
@@ -85,15 +88,15 @@ nav a {
 	font-size: 17px;
 }
 
-nav .active, a:hover {
-	color: rgb(253, 220, 54);
-}
-
 .topleft {
 	float: left;
 	margin: auto;
 	display: inline;
 	height: auto;
+}
+
+nav .active, a:hover {
+	color: rgb(253, 220, 54);
 }
 
 .btn1 {
@@ -138,39 +141,34 @@ footer {
 					<th>Address</th>
 				</tr>
 			</thead>
+			<%
+			List<Addresses> list = (List<Addresses>) request.getAttribute("list");
+			if (list != null) {
+				for (Addresses addresses : list) {
+					if (addresses != null) {
+			%>
 			<tbody>
 				<form action="/address" method="get">
 					<tr>
-						<td>Alanganallur<input type="hidden" name="address"
-							value="Alanganallur">
-							<button class="select-button">Select</button>
-						</td>
-					</tr>
-				</form>
-				<form action="/address" method="get">
-					<tr>
-						<td>Kalavasal<input type="hidden" name="address"
-							value="Kalavasal">
-							<button class="select-button">Select</button>
-						</td>
-					</tr>
-				</form>
-				<form action="/address" method="get">
-					<tr>
-						<td>Periyar<input type="hidden" name="address"
-							value="Periyar">
-							<button class="select-button">Select</button>
-						</td>
+						<td><%=addresses.getAddressName()%><input type="hidden"
+							name="address" value="<%=addresses.getAddressName()%>">
+							<button class="select-button">Select</button></td>
 					</tr>
 				</form>
 			</tbody>
+			<%
+			}
+			}
+			}
+			%>
 		</table>
 	</div>
 	<footer
-		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		style="margin-top: 450px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
 		<div style="text-align: center; margin-top: 20px;">
 			<p>&copy; 2024 Parking Spot. All Rights Reserved.</p>
 		</div>
 	</footer>
 </body>
+</html>
 </html>

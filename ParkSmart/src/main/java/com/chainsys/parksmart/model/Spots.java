@@ -6,36 +6,34 @@ import org.springframework.stereotype.Repository;
 public class Spots {
 	int userId;
 	int spotId;
-	String locationName;
-	String address;
+	String location;
+	String address_name;
 	String vehicleType;
 	String spotNumber;
 	int countSpotNumber;
 	String spotStatus;
 
-	public Spots(int userId, int spotId, String locationName, String address, String vehicleType, String spotNumber,
-			String spotStatus) {
+	public Spots(int userId, int spotId, String location, String address_name, String vehicleType, String spotNumber,
+			int countSpotNumber, String spotStatus) {
 		super();
 		this.userId = userId;
 		this.spotId = spotId;
-		this.locationName = locationName;
-		this.address = address;
+		this.location = location;
+		this.address_name = address_name;
 		this.vehicleType = vehicleType;
 		this.spotNumber = spotNumber;
+		this.countSpotNumber = countSpotNumber;
 		this.spotStatus = spotStatus;
-	}
-
-	public Spots() {
 	}
 
 	@Override
 	public String toString() {
-		return "Spots [userId=" + userId + ", spotId=" + spotId + ", locationName=" + locationName + ", address="
-				+ address + ", vehicleType=" + vehicleType + ", spotNumber=" + spotNumber + ", countSpotNumber="
+		return "Spots [userId=" + userId + ", spotId=" + spotId + ", location=" + location + ", address_name="
+				+ address_name + ", vehicleType=" + vehicleType + ", spotNumber=" + spotNumber + ", countSpotNumber="
 				+ countSpotNumber + ", spotStatus=" + spotStatus + ", getUserId()=" + getUserId() + ", getSpotId()="
-				+ getSpotId() + ", getLocationName()=" + getLocationName() + ", getAddress()=" + getAddress()
+				+ getSpotId() + ", getLocation()=" + getLocation() + ", getAddress_name()=" + getAddress_name()
 				+ ", getVehicleType()=" + getVehicleType() + ", getSpotNumber()=" + getSpotNumber()
-				+ ", getCountSpotNumber()=" + getCountSpotNumber() + ", isSpotStatus()=" + getSpotStatus() + "]";
+				+ ", getCountSpotNumber()=" + getCountSpotNumber() + ", getSpotStatus()=" + getSpotStatus() + "]";
 	}
 
 	public int getUserId() {
@@ -54,20 +52,20 @@ public class Spots {
 		this.spotId = spotId;
 	}
 
-	public String getLocationName() {
-		return locationName;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAddress_name() {
+		return address_name;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress_name(String address_name) {
+		this.address_name = address_name;
 	}
 
 	public String getVehicleType() {
@@ -100,6 +98,9 @@ public class Spots {
 
 	public void setSpotStatus(String spotStatus) {
 		this.spotStatus = spotStatus;
+	}
+
+	public Spots() {
 	}
 
 }

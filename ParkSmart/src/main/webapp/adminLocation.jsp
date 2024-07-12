@@ -152,7 +152,7 @@ footer {
 		%>
 
 		<div class="container" style="margin-top: 50px;">
-			<form action="adminAddress.jsp" class="card">
+			<form action="/manageAddress" method="get" class="card">
 				<input type="hidden" name="locationId"
 					value="<%=location.getLocationId()%>">
 				<button style="border: none;">
@@ -160,7 +160,7 @@ footer {
 						alt="Location Image" width="300" height="300">
 				</button>
 				<div class="card-content">
-									<h3 class="card-title" style="text-align: center;"><%=location.getLocation()%></h3>
+					<h3 class="card-title" style="text-align: center;"><%=location.getLocation()%></h3>
 				</div>
 			</form>
 		</div>
@@ -172,13 +172,19 @@ footer {
 		}
 		%>
 	</div>
-</body>
-
-<footer
-	style="margin-top: 500px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
-	<div style="text-align: center; margin-top: 20px;">
-		<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+	<div style="text-align: center">
+		<form action="admin.jsp">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
 	</div>
-</footer>
+	<footer
+		style="margin-top: 500px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
 </body>
 </html>

@@ -58,7 +58,7 @@ input[type="submit"]:hover {
 </style>
 <body>
 	<div class="container">
-		<form action="/manageAddress" method="get">
+		<form action="/addAddress" method="get">
 			<label for="address">Address</label> <input type="text" id="address"
 				name="address" required> <input type="submit" value="Submit">
 		</form>

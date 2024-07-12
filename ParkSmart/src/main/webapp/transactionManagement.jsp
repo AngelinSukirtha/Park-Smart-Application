@@ -152,7 +152,7 @@ footer {
 			<td><%=transaction.getUserId()%></td>
 			<td><%=transaction.getTransactionId()%></td>
 			<td><%=transaction.getReservationId()%></td>
-			<td><%=transaction.getPrice()%></td>
+			<td>Rs.<%=transaction.getPrice()%></td>
 			<td><%=transaction.getPaymentMethod()%></td>
 			<td><%=transaction.getTransactionTime()%></td>
 			<td><%=transaction.getCardNumber()%></td>

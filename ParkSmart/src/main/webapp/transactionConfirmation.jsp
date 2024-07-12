@@ -152,7 +152,14 @@ footer {
 				</p>
 			</div>
 			<div class="confirmation">
-				<a href="index.jsp" class="btn">Back to Home</a>
+				<button class="btn"
+					onclick="generatePaymentReceipt(
+        '<%=request.getAttribute("userName")%>',
+        '<%=request.getAttribute("email")%>',
+        '<%=request.getAttribute("phoneNumber")%>',
+        '<%=request.getAttribute("price")%>',
+        '<%=request.getAttribute("transactionTime")%>')">Download
+					Receipt</button>
 			</div>
 		</form>
 		<div class="confirmation">
@@ -163,6 +170,35 @@ footer {
 			</form>
 		</div>
 	</div>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	<script>
+        function generatePaymentReceipt(userName, email, phoneNumber, price, transactionTime) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFont("helvetica");
+            doc.setFontSize(22);
+
+            doc.setTextColor(33, 150, 243); 
+            doc.text("Park Smart Booking Receipt", 105, 20, { align: 'center' });
+
+            doc.setFontSize(14);
+            doc.setTextColor(0);
+            doc.text("Name: " + userName, 20, 40);
+            doc.text("Email: " + email, 20, 50);
+            doc.text("Phone Number: " + phoneNumber, 20, 60);
+           
+            doc.setFontSize(14); 
+            doc.text("Booking Details: ", 20, 80);
+            doc.text("Booking Date: " + transactionTime, 20, 90);
+            doc.text("Price: Rs. " + price, 20, 100);  
+            
+            doc.setFontSize(14);
+            doc.text("Thank you for booking your parking spot with us!!", 20, 120);
+
+            doc.save(userName + "_ParkSmart_Receipt.pdf");
+        }
+    </script>
 	<footer
 		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
 		<div style="text-align: center; margin-top: 20px;">

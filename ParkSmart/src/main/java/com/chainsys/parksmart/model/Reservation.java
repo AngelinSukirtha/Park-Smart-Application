@@ -9,32 +9,32 @@ public class Reservation {
 	String numberPlate;
 	String startDateTime;
 	String endDateTime;
+	int fineAmount;
 	String reservationStatus;
 	boolean isActive = true;
 
 	public Reservation(int userId, int reservationId, String numberPlate, String startDateTime, String endDateTime,
-			String reservationStatus, boolean isActive) {
+			int fineAmount, String reservationStatus, boolean isActive) {
 		super();
 		this.userId = userId;
 		this.reservationId = reservationId;
 		this.numberPlate = numberPlate;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
+		this.fineAmount = fineAmount;
 		this.reservationStatus = reservationStatus;
 		this.isActive = isActive;
-	}
-
-	public Reservation() {
 	}
 
 	@Override
 	public String toString() {
 		return "Reservation [userId=" + userId + ", reservationId=" + reservationId + ", numberPlate=" + numberPlate
-				+ ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", reservationStatus="
-				+ reservationStatus + ", isActive=" + isActive + ", getUserId()=" + getUserId()
+				+ ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", fineAmount=" + fineAmount
+				+ ", reservationStatus=" + reservationStatus + ", isActive=" + isActive + ", getUserId()=" + getUserId()
 				+ ", getReservationId()=" + getReservationId() + ", getNumberPlate()=" + getNumberPlate()
 				+ ", getStartDateTime()=" + getStartDateTime() + ", getEndDateTime()=" + getEndDateTime()
-				+ ", getReservationStatus()=" + getReservationStatus() + ", isActive()=" + getIsActive() + "]";
+				+ ", getFineAmount()=" + getFineAmount() + ", getReservationStatus()=" + getReservationStatus()
+				+ ", getIsActive()=" + getIsActive() + "]";
 	}
 
 	public int getUserId() {
@@ -77,6 +77,14 @@ public class Reservation {
 		this.endDateTime = endDateTime;
 	}
 
+	public int getFineAmount() {
+		return fineAmount;
+	}
+
+	public void setFineAmount(int fineAmount) {
+		this.fineAmount = fineAmount;
+	}
+
 	public String getReservationStatus() {
 		return reservationStatus;
 	}
@@ -91,6 +99,9 @@ public class Reservation {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public Reservation() {
 	}
 
 }

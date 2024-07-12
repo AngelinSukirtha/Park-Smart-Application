@@ -183,7 +183,7 @@ nav h1 {
 			<li><a href="admin.jsp">Home</a></li>
 			<li><a href="aboutUs.jsp">About Us</a></li>
 			<li><a href="priceDetails.jsp">Pricing</a></li>
-			<li><a href="/manageLocations">Add Location</a></li>
+			<li><a href="/manageLocations">Location</a></li>
 			<li><a href="index.jsp">Logout</a></li>
 		</ul>
 	</div>

@@ -176,9 +176,9 @@ footer {
 					if (addresses != null) {
 			%>
 			<tbody>
-				<form action="/manageAddress" method="get">
+				<form action="/addAddress" method="get">
 					<tr>
-						<td><input type="hidden" name="address"></td>
+						<td><input type="hidden" name="address"><%=addresses.getAddressName()%></td>
 					</tr>
 				</form>
 			</tbody>
@@ -188,6 +188,13 @@ footer {
 			}
 			%>
 		</table>
+	</div>
+	<div style="text-align: center">
+		<form action="admin.jsp">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
 	</div>
 	<footer
 		style="margin-top: 350px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">

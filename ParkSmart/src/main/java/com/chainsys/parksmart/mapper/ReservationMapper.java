@@ -19,9 +19,8 @@ public class ReservationMapper implements RowMapper<Reservation> {
 		reservation.setNumberPlate(rs.getString("number_plate"));
 		reservation.setStartDateTime(rs.getString("start_date_time"));
 		reservation.setEndDateTime(rs.getString("end_date_time"));
+		reservation.setFineAmount(rs.getInt("fine_amount"));
 		reservation.setReservationStatus(rs.getString("reservation_status"));
-		reservation.setActive(rs.getBoolean("is_active"));
 		return reservation;
-		
 	}
 }

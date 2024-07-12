@@ -78,7 +78,7 @@ table {
 }
 
 th, td {
-	padding: 10px;
+	padding: 6px;
 	text-align: center;
 	border: 1px solid #ddd;
 }
@@ -138,8 +138,8 @@ footer {
 			<th style="color: black;">Number Plate</th>
 			<th style="color: black;">Start Date And Time</th>
 			<th style="color: black;">End Date And Time</th>
+			<th style="color: black;">Fine Amount</th>
 			<th style="color: black;">Reservation Status</th>
-			<th style="color: black;">Active</th>
 			<th style="color: black;" colspan="2">Approval</th>
 		</tr>
 		<%
@@ -152,8 +152,8 @@ footer {
 			<td><%=reservation.getNumberPlate()%></td>
 			<td><%=reservation.getStartDateTime()%></td>
 			<td><%=reservation.getEndDateTime()%></td>
+			<td>Rs.<%=reservation.getFineAmount()%></td>
 			<td><%=reservation.getReservationStatus()%></td>
-			<td><%=reservation.getIsActive()%></td>
 			<td>
 				<form action="/updateReservationStatus" method="get">
 					<input type="hidden" name="reservationId"
@@ -166,21 +166,11 @@ footer {
 						style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
 				</form>
 			</td>
-			<td><form action="/updateReservationActive" method="get">
-					<input type="hidden" name="reservationId"
-						value="<%=reservation.getReservationId()%>"> <select
-						name="isActive">
-						<option>Select</option>
-						<option>true</option>
-						<option>false</option>
-					</select><input type="submit" name="isActive" value="update"
-						style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
-				</form></td>
-		</tr>
-		<%
-		}
-		}
-		%>
+			<%
+			}
+			}
+			%>
+		
 	</table>
 	<br>
 	<div style="text-align: center">

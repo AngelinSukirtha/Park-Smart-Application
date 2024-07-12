@@ -144,7 +144,7 @@ footer {
 			href="priceDetails.jsp" target="blank">Pricing</a> <a
 			href="aboutUs.jsp" target="blank">AboutUs</a>
 	</nav>
-	<div class="container">
+	<div class="container" style="margin-top: 70px">
 		<h2>Add Location</h2>
 		<form action="/addLocations" method="post"
 			enctype="multipart/form-data">
@@ -154,11 +154,11 @@ footer {
 				value="Add Location">
 		</form>
 	</div>
-	<footer
-		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
-		<div style="text-align: center; margin-top: 20px;">
-			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
-		</div>
-	</footer>
 </body>
+<footer
+	style="margin-top: 250px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+	<div style="text-align: center; margin-top: 20px;">
+		<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+	</div>
+</footer>
 </html>
