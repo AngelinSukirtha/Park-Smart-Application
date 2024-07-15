@@ -41,7 +41,7 @@ public class SpotsController {
 
 	@GetMapping("/address")
 	public String address(@RequestParam("address") String address, Model model, HttpSession session) {
-		spots.setAddress_name(address);
+		spots.setAddressName(address);
 		session.setAttribute("address", address);
 		int locationId = (int) session.getAttribute("locationId");
 		String locationName = userImpl.getLocationByLocationId(locationId);

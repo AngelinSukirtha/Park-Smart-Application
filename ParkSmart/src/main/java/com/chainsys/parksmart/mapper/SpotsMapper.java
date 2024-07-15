@@ -17,7 +17,7 @@ public class SpotsMapper implements RowMapper<Spots> {
 		spots.setUserId(rs.getInt("user_id"));
 		spots.setSpotId(rs.getInt("spot_id"));
 		spots.setLocation(rs.getString("location"));
-		spots.setAddress_name(rs.getString("address_name"));
+		spots.setAddressName(rs.getString("address_name"));
 		spots.setVehicleType(rs.getString("vehicle_type"));
 		spots.setSpotNumber(rs.getString("spot_number"));
 		spots.setSpotStatus(rs.getString("spot_status"));

@@ -22,6 +22,7 @@ CREATE TABLE locations(
 	location_id INT AUTO_INCREMENT PRIMARY KEY,
 	location VARCHAR(100) UNIQUE,
 	location_image longblob);
+
 select * from locations;
 drop table locations;
 
@@ -44,7 +45,7 @@ CREATE TABLE spots (
     FOREIGN KEY (user_id) REFERENCES user(user_id),
 	FOREIGN KEY (location) REFERENCES locations(location),
 	FOREIGN KEY (address_name) REFERENCES addresses(address_name),
-    UNIQUE KEY (location, spot_number));
+    UNIQUE KEY (location, address_name, spot_number));
 select * from spots;
 drop table spots;
 
@@ -54,7 +55,7 @@ CREATE TABLE reservation (
     number_plate VARCHAR(800) NOT NULL,
     start_date_time VARCHAR(100) NOT NULL,
     end_date_time VARCHAR(100) NOT NULL,
-    fine_amount INT,
+    fine_amount INT NOT NULL DEFAULT 0,
     reservation_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     is_active BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(user_id));

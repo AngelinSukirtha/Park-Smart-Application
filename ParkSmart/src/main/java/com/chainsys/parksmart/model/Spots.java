@@ -7,19 +7,19 @@ public class Spots {
 	int userId;
 	int spotId;
 	String location;
-	String address_name;
+	String addressName;
 	String vehicleType;
 	String spotNumber;
 	int countSpotNumber;
 	String spotStatus;
 
-	public Spots(int userId, int spotId, String location, String address_name, String vehicleType, String spotNumber,
+	public Spots(int userId, int spotId, String location, String addressName, String vehicleType, String spotNumber,
 			int countSpotNumber, String spotStatus) {
 		super();
 		this.userId = userId;
 		this.spotId = spotId;
 		this.location = location;
-		this.address_name = address_name;
+		this.addressName = addressName;
 		this.vehicleType = vehicleType;
 		this.spotNumber = spotNumber;
 		this.countSpotNumber = countSpotNumber;
@@ -29,9 +29,9 @@ public class Spots {
 	@Override
 	public String toString() {
 		return "Spots [userId=" + userId + ", spotId=" + spotId + ", location=" + location + ", address_name="
-				+ address_name + ", vehicleType=" + vehicleType + ", spotNumber=" + spotNumber + ", countSpotNumber="
+				+ addressName + ", vehicleType=" + vehicleType + ", spotNumber=" + spotNumber + ", countSpotNumber="
 				+ countSpotNumber + ", spotStatus=" + spotStatus + ", getUserId()=" + getUserId() + ", getSpotId()="
-				+ getSpotId() + ", getLocation()=" + getLocation() + ", getAddress_name()=" + getAddress_name()
+				+ getSpotId() + ", getLocation()=" + getLocation() + ", getAddressName()=" + getAddressName()
 				+ ", getVehicleType()=" + getVehicleType() + ", getSpotNumber()=" + getSpotNumber()
 				+ ", getCountSpotNumber()=" + getCountSpotNumber() + ", getSpotStatus()=" + getSpotStatus() + "]";
 	}
@@ -60,12 +60,12 @@ public class Spots {
 		this.location = location;
 	}
 
-	public String getAddress_name() {
-		return address_name;
+	public String getAddressName() {
+		return addressName;
 	}
 
-	public void setAddress_name(String address_name) {
-		this.address_name = address_name;
+	public void setAddressName(String addressName) {
+		this.addressName = addressName;
 	}
 
 	public String getVehicleType() {

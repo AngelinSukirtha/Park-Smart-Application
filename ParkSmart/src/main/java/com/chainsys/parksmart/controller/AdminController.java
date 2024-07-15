@@ -95,7 +95,6 @@ public class AdminController {
 
 		int reservationId = reservation.getReservationId();
 		reservation.setReservationId(reservationId);
-		System.out.println("reservationId" + reservationId);
 
 		for (Reservation reservation : reservations) {
 			Integer fineAmount = userImpl.calculateFine(reservation);
