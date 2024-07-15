@@ -160,8 +160,8 @@ footer {
 						<input type="hidden" name="spotId" value="<%=spots.getSpotId()%>">
 						<select name="spotStatus">
 							<option>Select</option>
-							<option value="Occupied">Occupied</option>
-							<option value="Unoccupied">Unoccupied</option>
+							<option value="Occupied" style="color: red">Occupied</option>
+							<option value="Unoccupied" style="color: green">Unoccupied</option>
 						</select> <input type="submit" value="Update"
 							style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
 					</form></td>
