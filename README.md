@@ -1,4 +1,4 @@
-# <a href="" target="_blank">Parking Spot</a> 
+# <a href="" target="_blank">Park Smart</a> 
 - A Java Web Developement Project
 - Admin
 - User
