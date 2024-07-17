@@ -64,7 +64,6 @@ At the Parking Spot Management System, our vision is to optimize urban parking b
 - Apache Maven<br>
 - Editor Sql developer<br>
 
-
 <br>### =================Parking Spot Management Features  =================
 <br><span style="color:blue">**Location Management :**</span><br>
       Enables administrators to add and manage parking locations where spots are available with associated images for visual identification.<br>
