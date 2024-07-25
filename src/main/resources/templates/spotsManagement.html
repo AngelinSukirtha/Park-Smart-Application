@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/CSS/spotsManagement.css}">
+<title>Parking Spots Management</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+	<div class="center">
+		<h1 style="color: black;">PARKING SPOTS DETAILS</h1>
+	</div>
+	<form th:action="@{/searchSpots}" method="get">
+		<div class="search">
+			<input type="text" name="searchText" id="searchText" required>
+			<input type="submit" value="Search" class="btn-search">
+		</div>
+	</form>
+	<div>
+		<table border="1" style="margin-top: 20px">
+			<thead style="background-color: rgb(253, 220, 54); height: 40px;">
+				<tr>
+					<th style="color: black;">User Id</th>
+					<th style="color: black;">Spot Id</th>
+					<th style="color: black;">Location Name</th>
+					<th style="color: black;">Address</th>
+					<th style="color: black;">Vehicle Type</th>
+					<th style="color: black;">Spot Number</th>
+					<th style="color: black;">Spot Status</th>
+					<th style="color: black;">Manage</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="spots : ${list}"
+					style="color: black; background-color: white; text-align: center;">
+					<td th:text="${spots.userId}"></td>
+					<td th:text="${spots.spotId}"></td>
+					<td th:text="${spots.location}"></td>
+					<td th:text="${spots.addressName}"></td>
+					<td th:text="${spots.vehicleType}"></td>
+					<td th:text="${spots.spotNumber}"></td>
+					<td th:text="${spots.spotStatus}"></td>
+					<td>
+						<form th:action="@{/updateSpotStatus}" method="get">
+							<input type="hidden" name="spotId" th:value="${spots.spotId}">
+							<select name="spotStatus">
+								<option>Select</option>
+								<!-- <%!public String getSpotStatus(String
+								spotStatus) { if ("Occupied".equalsIgnoreCase(spotStatus)) {
+								return "Occupied"; } else if
+								("Unoccupied".equalsIgnoreCase(spotStatus)) { return
+								"Unoccupied"; } else { return ""; } }%> -->
+								<option value="Occupied" style="color: red">Occupied</option>
+								<option value="Unoccupied" style="color: green">Unoccupied</option>
+							</select> <input type="submit" value="Update"
+								style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<div style="text-align: center;">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+	<footer>
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/slick/slick.grid.min.css}" rel="stylesheet" />
+<link th:href="@{/slick/slick-default-theme.min.css}" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/slick/jquery-ui-1.8.16.custom.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/slick/slick.grid.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/slick/custom-slickgrid.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/css/spotsManagement.css}">
+
+<script src="slick/jquery-3.6.4.min.js"></script>
+<script src="slick/jquery.event.drag-2.3.js"></script>
+<script src="slick/jquery.event.drop-2.3.js"></script>
+<script src="slick/slick.core.js"></script>
+<script src="slick/slick.dataview.js"></script>
+<script src="slick/slick.grid.js"></script>
+<script src="slick/firebugx.js"></script>
+<script src="slick/slick.formatters.js"></script>
+<script src="slick/slick.editors.js"></script>
+<script src="slick/slick.core.frozen.js"></script>
+<title>Parking Spots Management</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+	<div class="center">
+		<h1 style="color: black;">PARKING SPOTS DETAILS</h1>
+	</div>
+	<div id="spotsGrid" style="width: 100%; height: 500px;"></div>
+
+	<div style="text-align: center;">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+	<footer>
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(document).ready()
+		{
+			var grid;
+			var columns = [ {
+				id : "userId",
+				name : "User Id",
+				field : "userId",
+				width : 80,
+				sortable : true
+			}, {
+				id : "spotId",
+				name : "Spot Id",
+				field : "spotId",
+				width : 80,
+				sortable : true
+			}, {
+				id : "location",
+				name : "Location Name",
+				field : "location",
+				width : 80,
+				sortable : true
+			}, {
+				id : "addressName",
+				name : "Address",
+				field : "addressName",
+				width : 80,
+				sortable : true
+			}, {
+				id : "vehicleType",
+				name : "Vehicle Type",
+				field : "vehicleType",
+				width : 80,
+				sortable : true
+			}, {
+				id : "spotNumber",
+				name : "Spot Number",
+				field : "spotNumber",
+				width : 80,
+				sortable : true
+			}, {
+				id : "spotStatus",
+				name : "Spot Status",
+				field : "spotStatus",
+				width : 80,
+				sortable : true
+			}, {
+				id : "manage",
+				name : "Manage",
+				field : "manage",
+				width : 80,
+				sortable : true
+			} ];
+
+			var data = /*[[${list}]]*/[];
+
+			for (i = 0; i < data.length; i++) {
+
+				data[i].id = data[i].userId;
+			}
+
+			function actionFormatter(row, cell, value, columnDef, dataContext) {
+				return value;
+
+			}
+
+			dataView = new Slick.Data.DataView();
+
+			grid = new Slick.Grid("#spotsGrid", data, columns, options);
+			dataView.onRowCountChanged.subscribe(function(e, args) {
+				grid.updateRowCount();
+				grid.render();
+			});
+
+			dataView.onRowsChanged.subscribe(function(e, args) {
+				grid.invalidateRows(args.rows);
+				grid.render();
+			});
+			grid.onCellChange.subscribe(function(e, args) {
+				dataView.updateItem(args.item.id, args.item);
+			});
+
+			grid.onSort.subscribe(function(e, args) {
+				var cols = args.sortCols;
+				dataView.sort(function(dataRow1, dataRow2) {
+					for (var i = 0, l = cols.length; i < l; i++) {
+						var field = cols[i].sortCol.field;
+						var sign = cols[i].sortAsc ? 1 : -1;
+						var value1 = dataRow1[field], value2 = dataRow2[field];
+						var result = (value1 == value2 ? 0
+								: (value1 > value2 ? 1 : -1))
+								* sign;
+						if (result != 0) {
+							return result;
+						}
+					}
+					return 0;
+				});
+				grid.invalidate();
+				grid.render();
+			});
+			grid.init();
+			grid.setHeaderRowVisibility(false);
+			dataView.beginUpdate();
+			dataView.setItems(data);
+			dataView.endUpdate();
+			grid.render();
+			grid.resizeCanvas();
+
+			console.log("SlickGrid initialized successfully");
+		}
+
+		$('#searchInput').on('input', function() {
+			var searchTerm = $(this).val().toLowerCase();
+			filteredData = data.filter(function(item) {
+				return Object.values(item).some(function(value) {
+					return String(value).toLowerCase().includes(searchTerm);
+				});
+			});
+			grid.setData(filteredData);
+			grid.invalidate();
+			grid.render();
+		});
+		/*]]>*/
+	</script>
+</body>
+</html> -->

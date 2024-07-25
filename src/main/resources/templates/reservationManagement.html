@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/CSS/reservationManagement.css}">
+<title>Reservation Management</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+
+	<div class="center">
+		<h1 style="color: black;">RESERVATION DETAILS</h1>
+	</div>
+
+	<form action="/searchReservation" method="get">
+		<div class="search">
+			<input type="text" name="searchText" id="searchText" required>
+			<input type="submit" value="Search" class="btn-search">
+		</div>
+	</form>
+
+	<form th:action="@{/filterReservation}" method="get">
+		<label>From Date: <input type="datetime-local"
+			name="startDateTime" id="startDateTime"
+			th:min="${#dates.format(#dates.create(2013, 1, 1, 0, 0), 'yyyy-MM-dd''T''HH:mm')}">
+		</label> <label>To Date: <input type="datetime-local"
+			name="endDateTime" id="endDateTime"
+			th:value="${#dates.format(today, 'yyyy-MM-dd''T''HH:mm')}">
+		</label>
+		<button type="submit" class="btn-search">Submit</button>
+	</form>
+
+	<table border="1" style="margin-top: 20px">
+		<thead style="background-color: rgb(253, 220, 54); height: 40px;">
+			<tr>
+				<th>User Id</th>
+				<th>Reservation Id</th>
+				<th>Number Plate</th>
+				<th>Start Date And Time</th>
+				<th>End Date And Time</th>
+				<th>Fine Amount</th>
+				<th>Reservation Status</th>
+				<th colspan="2">Approval</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="reservation : ${list}"
+				style="color: black; background-color: white; text-align: center;">
+				<td th:text="${reservation.userId}"></td>
+				<td th:text="${reservation.reservationId}"></td>
+				<td th:text="${reservation.numberPlate}"></td>
+				<td th:text="${reservation.startDateTime}"></td>
+				<td th:text="${reservation.endDateTime}"></td>
+				<td th:text="'Rs.' + ${reservation.fineAmount}"></td>
+				<td th:text="${reservation.reservationStatus}"></td>
+				<td>
+					<form action="/updateReservationStatus" method="get">
+						<input type="hidden" name="reservationId"
+							th:value="${reservation.reservationId}"> <select
+							name="reservationStatus">
+							<option value="">Select</option>
+							<option value="Approved" class="text-success fw-bold"
+								style="color: green">Approved</option>
+							<option value="Rejected" class="text-danger fw-bold"
+								style="color: red">Rejected</option>
+						</select> <input type="submit" value="Update"
+							style="margin: 0 15px; border-color: rgb(253, 220, 54); background-color: white">
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div style="text-align: center">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+
+	<footer>
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+</body>
+</html>

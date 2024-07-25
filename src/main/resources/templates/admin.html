@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/admin.css}">
+<title>Admin Dashboard</title>
+</head>
+<body>
+	<div class="sidebar">
+		<nav>
+			<img src="image/logo1.png" alt="Logo" class="topleft"
+				style="margin-top: 12px;">
+			<h1 class="topleft"
+				style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+			<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		</nav>
+		<br> <br> <br> <br>
+		<ul style="font-size: 20px">
+			<li><a th:href="@{/admin}">Home</a></li>
+			<li><a th:href="@{/about}">About Us</a></li>
+			<li><a th:href="@{/price}">Pricing</a></li>
+			<li><a href="/manageLocations">Location</a></li>
+			<li><a th:href="@{/}">Logout</a></li>
+		</ul>
+	</div>
+
+	<div class="content">
+		<div class="header">
+			<h1>Welcome, Angelin!</h1>
+		</div>
+		<div class="container">
+			<div class="card">
+				<div class="card-header">Users</div>
+				<a th:href="@{/users}"><button class="button">Manage</button></a>
+			</div>
+
+			<div class="card">
+				<div class="card-header">Spots</div>
+				<a th:href="@{/manageSpots}"><button class="button">Manage</button></a>
+			</div>
+
+			<div class="card">
+				<div class="card-header">Reservations</div>
+				<a th:href="@{/manageReservations}"><button class="button">Manage</button></a>
+			</div>
+
+			<div class="card">
+				<div class="card-header">Transactions</div>
+				<a th:href="@{/manageTransactions}"><button class="button">Manage</button></a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

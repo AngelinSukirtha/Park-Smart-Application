@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/address.css}">
+<title>Address</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+
+	<h2 style="text-align: center; margin-top: 50px;">AVAILABLE
+		ADDRESS</h2>
+
+	<div class="container">
+		<table>
+			<thead>
+				<tr>
+					<th>Address</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="address : ${list}">
+					<form th:action="@{/address}" method="get">
+						<td><span th:text="${address.addressName}"></span> <input
+							type="hidden" name="address" th:value="${address.addressName}">
+							<button type="submit" class="select-button">Select</button></td>
+					</form>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<footer
+		style="margin-top: 450px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Parking Spot. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

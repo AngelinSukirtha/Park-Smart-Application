@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link th:href="@{/slick/slick.grid.min.css}" rel="stylesheet" />
+<link th:href="@{/slick/slick-default-theme.min.css}" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/slick/jquery-ui-1.8.16.custom.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/slick/slick.grid.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/slick/custom-slickgrid.css}"
+	type="text/css" />
+<link rel="stylesheet" th:href="@{/css/userManagement.css}">
+
+<script src="slick/jquery-3.6.4.min.js"></script>
+<script src="slick/jquery.event.drag-2.3.js"></script>
+<script src="slick/jquery.event.drop-2.3.js"></script>
+<script src="slick/slick.core.js"></script>
+<script src="slick/slick.dataview.js"></script>
+<script src="slick/slick.grid.js"></script>
+<script src="slick/firebugx.js"></script>
+<script src="slick/slick.formatters.js"></script>
+<script src="slick/slick.editors.js"></script>
+<script src="slick/slick.core.frozen.js"></script>
+
+<title>User Details</title>
+
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a href="index.jsp" th:href="@{/}" class="btn1">Logout</a>
+	</nav>
+
+	<div class="center">
+		<h1 style="color: black;">USER DETAILS</h1>
+	</div>
+
+	<!-- <form action="/searchUser" method="get">
+		<div class="search">
+			<input type="text" name="searchText" id="searchText" required>
+			<input type="submit" value="Search" class="btn-search">
+		</div>
+	</form> -->
+
+	<input type="text" id="searchInput" class="form-control mb-3"
+		style="margin-left: 1060px" placeholder="Search...">
+	<div id="userGrid"
+		style="width: 100%; height: 500px; margin-top: 20px;"></div>
+
+	<br>
+
+	<div style="text-align: center;">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+
+	<footer
+		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; text-align: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(document).ready()
+		{
+			var grid;
+			var columns = [ {
+				id : "userId",
+				name : "User Id",
+				field : "userId",
+				width : 150,
+				sortable : true
+			}, {
+				id : "userName",
+				name : "Name",
+				field : "userName",
+				width : 280,
+				sortable : true
+			}, {
+				id : "userPassword",
+				name : "Password",
+				field : "userPassword",
+				width : 270,
+				sortable : true
+			}, {
+				id : "phoneNumber",
+				name : "Phone Number",
+				field : "phoneNumber",
+				width : 270,
+				sortable : true
+			}, {
+				id : "email",
+				name : "Email",
+				field : "email",
+				width : 275,
+				sortable : true
+			} ];
+
+			var options = {
+				enableCellNavigation : true,
+				enableColumnReorder : false,
+				editable : true,
+				multiColumnSort : true
+			};
+
+			var data = /*[[${list}]]*/[];
+
+			for (i = 0; i < data.length; i++) {
+
+				data[i].id = data[i].userId;
+			}
+
+			function actionFormatter(row, cell, value, columnDef, dataContext) {
+				return value;
+
+			}
+
+			dataView = new Slick.Data.DataView();
+
+			grid = new Slick.Grid("#userGrid", data, columns, options);
+			dataView.onRowCountChanged.subscribe(function(e, args) {
+				grid.updateRowCount();
+				grid.render();
+			});
+
+			dataView.onRowsChanged.subscribe(function(e, args) {
+				grid.invalidateRows(args.rows);
+				grid.render();
+			});
+			grid.onCellChange.subscribe(function(e, args) {
+				dataView.updateItem(args.item.id, args.item);
+			});
+
+			grid.onSort.subscribe(function(e, args) {
+				var cols = args.sortCols;
+				dataView.sort(function(dataRow1, dataRow2) {
+					for (var i = 0, l = cols.length; i < l; i++) {
+						var field = cols[i].sortCol.field;
+						var sign = cols[i].sortAsc ? 1 : -1;
+						var value1 = dataRow1[field], value2 = dataRow2[field];
+						var result = (value1 == value2 ? 0
+								: (value1 > value2 ? 1 : -1))
+								* sign;
+						if (result != 0) {
+							return result;
+						}
+					}
+					return 0;
+				});
+				grid.invalidate();
+				grid.render();
+			});
+			grid.init();
+			grid.setHeaderRowVisibility(false);
+			dataView.beginUpdate();
+			dataView.setItems(data);
+			dataView.endUpdate();
+			grid.render();
+			grid.resizeCanvas();
+
+			console.log("SlickGrid initialized successfully");
+		}
+
+		$('#searchInput').on('input', function() {
+			var searchTerm = $(this).val().toLowerCase();
+			filteredData = data.filter(function(item) {
+				return Object.values(item).some(function(value) {
+					return String(value).toLowerCase().includes(searchTerm);
+				});
+			});
+			grid.setData(filteredData);
+			grid.invalidate();
+			grid.render();
+		});
+		/*]]>*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:util="urn:java:java.util">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/adminLocation.css}">
+<title>Add Location</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+		<a th:href="@{/addLocation}">Add Location</a>
+	</nav>
+	<h1 style="text-align: center; margin-top: 50px;">AVAILABLE
+		LOCATIONS</h1>
+	<div class="containers">
+		<div th:each="location : ${list}"
+			th:if="${location.locationImage != null}" class="card"
+			style="margin: 20px 10px;">
+			<form th:action="@{/manageAddress}" method="get">
+				<input type="hidden" name="locationId"
+					th:value="${location.locationId}">
+				<button type="submit" style="border: none;">
+					<img th:src="'data:image/jpeg;base64,' + ${location.base64Image}"
+						alt="Location Image" width="300" height="300">
+				</button>
+				<div class="card-content">
+					<h3 class="card-title" th:text="${location.location}"
+						style="text-align: center;"></h3>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div style="text-align: center; margin-top: 20px;">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+	<footer
+		style="margin-top: 500px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

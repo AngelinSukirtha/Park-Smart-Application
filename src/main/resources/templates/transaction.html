@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/transaction.css}">
+<title>Transactions</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+	<h2>Transactions</h2>
+	<form th:action="@{/pay}" method="get">
+		<table>
+			<tr>
+				<th>Price</th>
+				<th>Payment Method</th>
+				<th>Transaction Time</th>
+				<th>Payment Checkout</th>
+			</tr>
+			<tr>
+				<td th:text="${price}"></td>
+				<td><select name="paymentMethod">
+						<option value="Credit Card">Credit Card</option>
+						<option value="Debit Card">Debit Card</option>
+				</select></td>
+				<td th:text="${transactionTime}"></td>
+				<td><button type="submit" class="view-button">Pay</button></td>
+			</tr>
+		</table>
+	</form>
+	<footer
+		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

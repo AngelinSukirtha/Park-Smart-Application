@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/CSS/adminAddress.css}">
+<title>Address</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px; font-size: x-large;">
+			<b>ark</b>
+		</h1>
+		<h1 class="topleft" style="margin-top: 10px; font-size: x-large;">
+			<b>Smart</b>
+		</h1>
+		<a href="index.html" target="_blank" class="btn1">Logout</a> <a
+			href="priceDetails.html" target="_blank">Pricing</a> <a
+			href="aboutUs.html" target="_blank">AboutUs</a>
+	</nav>
+
+	<div class="modal fade" id="addressModal" tabindex="-1" role="dialog"
+		aria-labelledby="addressModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+
+	<h2 style="text-align: center; margin-top: 50px">
+		<b>AVAILABLE ADDRESS</b>
+	</h2>
+
+	<div class="container">
+		<table>
+			<thead>
+				<tr>
+					<th>Address<a th:onclick="openAddressModal()"
+						data-toggle="modal" data-target="#addressModal">
+							<button class="select-button" style="width: 60px">Add</button>
+					</a>8
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="address : ${list}">
+					<td><input type="hidden" th:name="address"
+						th:value="${address.addressName}"> <span
+						th:text="${address.addressName}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div style="text-align: center">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit"
+				style="border-color: rgb(253, 220, 54); background-color: rgb(253, 220, 54); width: 117px; height: 37px;"
+				title="logout">Back</button>
+		</form>
+	</div>
+
+	<footer
+		style="margin-top: 350px; background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Parking Spot. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+	<script th:inline="javascript">
+		function openAddressModal() {
+			$('#addressModal .modal-body').load(
+					'/adminAddAddress',
+					function(response, status, xhr) {
+						if (status == "error") {
+							console.error("Error loading content:", xhr.status,
+									xhr.statusText);
+						} else {
+							$('#addressModal').modal('show');
+						}
+					});
+		}
+	</script>
+</body>
+</html>

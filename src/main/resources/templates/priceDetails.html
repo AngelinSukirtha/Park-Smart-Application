@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/priceDetails.css}">
+<title>Parking Price Details</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft" style="color: rgb(253, 220, 54); margin-top: 9px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 9px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Back</a>
+	</nav>
+	<div class="container">
+		<h1 style="text-align: center;">Parking Price Details</h1>
+		<div class="card">
+			<h2>Car</h2>
+			<p>Price per hour: Rs.50</p>
+			<div class="card-footer">
+				<p>No height restrictions.</p>
+				<p>Monthly parking available.</p>
+			</div>
+		</div>
+
+		<div class="card">
+			<h2>Bike</h2>
+			<p>Price per hour: Rs.20</p>
+			<div class="card-footer">
+				<p>No height restrictions.</p>
+				<p>Monthly parking available.</p>
+			</div>
+		</div>
+
+		<div class="card">
+			<h2>Truck</h2>
+			<p>Price per hour: Rs.60</p>
+			<div class="card-footer">
+				<p>No height restrictions.</p>
+				<p>Special oversized vehicle area.</p>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

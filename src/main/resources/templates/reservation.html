@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/CSS/reservation.css}">
+<script th:src="@{/javascript/reservationError.js}"></script>
+<title>Reservation Page</title>
+</head>
+<body>
+	<nav>
+		<a th:href="@{/backAddress}" class="btn1">Back</a> <img
+			src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="blank">Pricing</a> <a th:href="@{/about}" target="blank">AboutUs</a>
+	</nav>
+
+	<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+		<span th:text="${errorMessage}"></span>
+	</div>
+
+	<div class="container">
+		<h2>Reservation</h2>
+		<div th:if="${session.userId}">
+			<div th:text="'Vehicle Count: ' + ${session.countSpotNumber}"></div>
+			<form th:action="@{/reservation}" method="get">
+				<div class="form-group">
+					<label for="numberPlate">Number Plate:</label> <input type="text"
+						id="numberPlate" name="numberPlate" required> <span
+						class="error-message"></span>
+				</div>
+				<div class="form-group">
+					<label for="startDateTime">Start DateTime:</label> <input
+						type="datetime-local" id="startDateTime" name="startDateTime"
+						min="2024-07-18T00:00" required> <span
+						class="error-message"></span>
+				</div>
+				<div class="form-group">
+					<label for="endDateTime">End DateTime:</label> <input
+						type="datetime-local" id="endDateTime" name="endDateTime" required>
+					<span class="error-message"></span>
+				</div>
+				<input type="submit" value="Submit Reservation">
+			</form>
+		</div>
+	</div>
+	<footer
+		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>

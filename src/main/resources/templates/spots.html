@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:src="@{/javascript/spots.js}"></script>
+<link rel="stylesheet" th:href="@{/CSS/spots.css}">
+<title>Spots Choosing Page</title>
+</head>
+<body>
+	<nav>
+		<img src="image/logo1.png" alt="Logo" class="topleft"
+			style="margin-top: 12px;">
+		<h1 class="topleft"
+			style="color: rgb(253, 220, 54); margin-top: 10px;">ark</h1>
+		<h1 class="topleft" style="margin-top: 10px;">Smart</h1>
+		<a th:href="@{/}" class="btn1">Logout</a> <a th:href="@{/price}"
+			target="_blank">Pricing</a> <a th:href="@{/about}" target="_blank">AboutUs</a>
+	</nav>
+	<div class="vehicle-buttons">
+		<button class="vehicle-button" style="margin-left: 100px;"
+			onclick="setVehicleType('Car')">
+			<i class="fas fa-car"></i>CAR
+			<p>Rs.50 per hour</p>
+		</button>
+		<button class="vehicle-button" style="margin-right: 70px;"
+			onclick="setVehicleType('Bike')">
+			<i class="fas fa-bicycle"></i>BIKE
+			<p>Rs.20 per hour</p>
+		</button>
+		<button class="vehicle-button" style="margin-right: 140px;"
+			onclick="setVehicleType('Truck')">
+			<i class="fas fa-truck"></i>TRUCK
+			<p>Rs.60 per hour</p>
+		</button>
+	</div>
+	<form id="parkingForm" action="/spots" method="get">
+		<input type="hidden" name="vehicleType" id="vehicleTypeInput">
+		<div class="container">
+			<div class="grid" th:if="${session.spotList != null}">
+				<th:block th:each="i : ${#numbers.sequence(1, 20)}">
+					<input type="checkbox" class="checkbox-cell" th:id="'C' + ${i}"
+						th:disabled="${session.spotList.contains('C' + i)}">
+					<label th:for="'C' + ${i}" class="cell"
+						th:classappend="${session.spotList.contains('C' + i)} ? 'occupied disabled' : ''"
+						th:text="'C' + ${i}"></label>
+				</th:block>
+			</div>
+
+			<div class="grid1" th:if="${session.spotList != null}">
+				<th:block th:each="i : ${#numbers.sequence(1, 33)}">
+					<input type="checkbox" class="checkbox-cell" th:id="'B' + ${i}"
+						th:disabled="${session.spotList.contains('B' + i)}">
+					<label th:for="'B' + ${i}" class="cell"
+						th:classappend="${session.spotList.contains('B' + i)} ? 'occupied disabled' : ''"
+						th:text="'B' + ${i}"></label>
+				</th:block>
+			</div>
+
+			<div class="grid2" th:if="${session.spotList != null}">
+				<th:block th:each="i : ${#numbers.sequence(1, 14)}">
+					<input type="checkbox" class="checkbox-cell" th:id="'T' + ${i}"
+						th:disabled="${session.spotList.contains('T' + i)}">
+					<label th:for="'T' + ${i}" class="cell"
+						th:classappend="${session.spotList.contains('T' + i)} ? 'occupied disabled' : ''"
+						th:text="'T' + ${i}"></label>
+				</th:block>
+			</div>
+
+			<div style="text-align: center; margin-top: 50px;">
+				<button type="submit"
+					style="padding: 10px 20px; border: none; cursor: pointer; background-color: rgb(253, 220, 54); color: black; border-radius: 5px; margin-bottom: 50px; margin-left: 500px;">
+					Book Now</button>
+			</div>
+		</div>
+	</form>
+
+	<footer
+		style="background-color: black; opacity: 0.9; padding: 20px 0; color: white; display: flex; flex-direction: column; align-items: center;">
+		<div style="text-align: center; margin-top: 20px;">
+			<p>&copy; 2024 Park Smart. All Rights Reserved.</p>
+		</div>
+	</footer>
+</body>
+</html>
